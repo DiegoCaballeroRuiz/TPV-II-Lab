@@ -3,10 +3,13 @@
 #include "../ecs/Component.h"
 
 class Transform;
+class SoundEffect;
 class FighterCtrl : public ecs::Component
 {
 public:
-	FighterCtrl(): Component(), _rotationDegrees(5.0f), _thrust(0.2), _speedLimit(3.0f) {}
+	FighterCtrl();
+	~FighterCtrl();
+
 	void update() override;
 	void initComponent() override;
 
@@ -16,5 +19,6 @@ protected:
 	float _speedLimit;
 
 	Transform* _transform;
+	SoundEffect* _thrustSound;
 };
 
