@@ -11,7 +11,12 @@
 	PACMANCTRL, \
 	STARMOTION, \
 	GAMECTRL, \
-	STOPONBORDER
+	STOPONBORDER, \
+	DEACCELERATION, \
+	HEALTH, \
+	FIGHTRCTRL, \
+	GUN, \
+	SHOWATOPPSTSIDE
 
 
 // Groups list - must have at least one element
@@ -23,5 +28,6 @@
 //
 #define _HDLRS_LIST_ \
     PACMAN, \
+	SHIP, \
 	GAMEINFO
 

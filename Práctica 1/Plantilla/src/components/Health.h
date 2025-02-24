@@ -16,6 +16,8 @@ protected:
 	Texture* _heartTexture;
 
 public:
+	__CMPID_DECL__(ecs::cmp::HEALTH)
+
 	Health(SDL_Rect heartPosition, float distanceBetweenHearts, Texture* texture, int startingHealth = 3);
 
 	inline int getHealth() const { return _currentHealth; }

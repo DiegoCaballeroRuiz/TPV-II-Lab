@@ -13,7 +13,9 @@ public:
 	void update() override;
 	void initComponent() override;
 
+	__CMPID_DECL__(ecs::cmp::FIGHTRCTRL)
 protected:
+
 	float _rotationDegrees;
 	float _thrust;
 	float _speedLimit;

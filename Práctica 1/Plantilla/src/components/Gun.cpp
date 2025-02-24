@@ -1,4 +1,8 @@
 #include "Gun.h"
+#include "Transform.h"
+#include "../ecs/Entity.h"
+#include "../ecs/Manager.h"
+#include <cmath>
 
 #include "../sdlutils/Texture.h"
 #include "../sdlutils/InputHandler.h"
@@ -10,6 +14,7 @@ Gun::Gun(Texture* texture) : Component(), _bulletTexture(texture)
 
 void Gun::initComponent() {
 	_inputHandler = InputHandler::Instance();
+	_transform = _ent->getMngr()->getComponent<Transform>(_ent);
 }
 
 void Gun::reset() {
@@ -41,14 +46,15 @@ void Gun::shoot(Vector2D p, Vector2D v, int width, int height, float r) {
 
 	if (_lastBullet == currentBullet) return;
 
-	_lastBullet->used = true;
-	_lastBullet->pos = p;
-	_lastBullet->vel = v;
-	_lastBullet->width = width;
-	_lastBullet->height = height;
-	_lastBullet->rot = r;
+	*_lastBullet = { true, p, v, width, height, r };
 }
 
 void Gun::update() {
-	//if(_inputHandler->isKeyDown(SDLK_s)) 
+	if (_inputHandler->isKeyDown(SDLK_s)) {
+		Vector2D vel = { std::sin(_transform->getRot()), std::cos(_transform->getRot()) };
+		shoot(_transform->getPos(), vel, _bulletTexture->width(), _bulletTexture->height(), _transform->getRot());
+	}
+
+	for (auto bullet : _bullets)
+		if (bullet.used) bullet.pos = bullet.pos + bullet.vel;
 }

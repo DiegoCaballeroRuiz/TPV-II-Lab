@@ -7,9 +7,12 @@
 
 class Texture;
 class InputHandler;
+class Transform;
 
 class Gun : public ecs::Component {
 public:
+	__CMPID_DECL__(ecs::cmp::GUN)
+
 	Gun(Texture* texture);
 	// ... 
 	struct Bullet {
@@ -42,5 +45,6 @@ private:
 	bullets_array_t _bullets;
 	iterator _lastBullet;
 	Texture* _bulletTexture;
+	Transform* _transform;
 	InputHandler* _inputHandler;
 };

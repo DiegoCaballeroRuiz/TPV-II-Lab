@@ -9,7 +9,7 @@
 
 FighterCtrl::FighterCtrl() : Component(), _rotationDegrees(5.0f), _thrust(0.2), _speedLimit(3.0f), _transform(nullptr)
 {
-	_thrustSound = new SoundEffect("thrust.wav");
+	//_thrustSound = new SoundEffect("thrust.wav");
 }
 
 FighterCtrl::~FighterCtrl() {
@@ -33,7 +33,7 @@ void FighterCtrl::update() {
 		_transform->setRot(_transform->getRot() - _rotationDegrees);
 	
 	if (inputHandler.isKeyDown(SDLK_UP)) {
-		_thrustSound->play();
+		//_thrustSound->play();
 		Vector2D velocity = _transform->getVel() + Vector2D(0, -1).rotate(_transform->getRot()) * _thrust;
 
 		if (velocity.magnitude() > _speedLimit)velocity = velocity.normalize() * _speedLimit;

@@ -4,9 +4,13 @@
 
 #include "../components/GameCtrl.h"
 #include "../components/Image.h"
-#include "../components/PacManCtrl.h"
+#include "../components/DeAcceleration.h"
 #include "../components/StopOnBorders.h"
 #include "../components/Transform.h"
+#include "../components/Health.h"
+#include "../components/FighterCtrl.h"
+#include "../components/ShowAtOppositeSide.h"
+#include "../components/Gun.h"
 #include "../ecs/Manager.h"
 #include "../sdlutils/InputHandler.h"
 #include "../sdlutils/SDLUtils.h"
@@ -33,13 +37,13 @@ Game::~Game() {
 
 void Game::init() {
 
-	// initialize the SDL singleton
+	//initialize the SDL singleton
 	if (!SDLUtils::Init("PacMan, Stars, ...", 800, 600,
-			"resources/config/resources.json")) {
-
+		"../resources/config/resources.json")) {
 		std::cerr << "Something went wrong while initializing SDLUtils"
-				<< std::endl;
+			<< std::endl;
 		return;
+
 	}
 
 	// initialize the InputHandler singleton
@@ -53,23 +57,31 @@ void Game::init() {
 	// Create the manager
 	_mngr = new Manager();
 
-	// create the PacMan entity
-	//
-	auto pacman = _mngr->addEntity();
-	_mngr->setHandler(ecs::hdlr::PACMAN, pacman);
-	auto tr = _mngr->addComponent<Transform>(pacman);
-	auto s = 50.0f;
-	auto x = (sdlutils().width() - s) / 2.0f;
-	auto y = (sdlutils().height() - s) / 2.0f;
-	tr->init(Vector2D(x, y), Vector2D(), s, s, 0.0f);
-	_mngr->addComponent<Image>(pacman, &sdlutils().images().at("pacman"));
-	_mngr->addComponent<PacManCtrl>(pacman);
-	_mngr->addComponent<StopOnBorders>(pacman);
+	//Crear la nave
+	auto nave = _mngr->addEntity();
+	_mngr->setHandler(ecs::hdlr::SHIP, nave);
 
-	// create the game info entity
-	auto ginfo = _mngr->addEntity();
-	_mngr->setHandler(ecs::hdlr::GAMEINFO, ginfo);
-	_mngr->addComponent<GameCtrl>(ginfo);
+	auto transform = _mngr->addComponent<Transform>(nave);
+	float scale = 50.0f;
+	float x = (sdlutils().width() - scale) / 2.0f;
+	float y = (sdlutils().height() - scale) / 2.0f;
+	transform->init(Vector2D(x, y), { 0, 0 }, scale, scale, 0.0f);
+
+	_mngr->addComponent<DeAcceleration>(nave);
+
+	_mngr->addComponent<Image>(nave, &sdlutils().images().at("pacman"));
+
+	scale = 10.0f;
+	x = (sdlutils().width() - scale) * 0.2f;
+	y = (sdlutils().height() - scale) * 0.2f;
+	SDL_Rect heartPos = {x, y, scale, scale};
+	_mngr->addComponent<Health>(nave, heartPos, 10.0f, &sdlutils().images().at("pacman"));
+
+	_mngr->addComponent<FighterCtrl>(nave);
+
+	_mngr->addComponent<Gun>(nave, &sdlutils().images().at("pacman"));
+
+	_mngr->addComponent<ShowAtOppositeSide>(nave);
 }
 
 void Game::start() {
