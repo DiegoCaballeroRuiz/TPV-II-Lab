@@ -43,8 +43,9 @@ public:
 private:
 	void shoot(Vector2D p, Vector2D v, int width, int height, float r);
 	bullets_array_t _bullets;
-	iterator _lastBullet;
+	size_t _lastBullet;
 	Texture* _bulletTexture;
 	Transform* _transform;
 	InputHandler* _inputHandler;
+	float _lastShootingTime;
 };

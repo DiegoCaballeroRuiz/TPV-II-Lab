@@ -16,8 +16,8 @@ FighterCtrl::~FighterCtrl() {
 	delete _transform;
 	_transform = nullptr;
 
-	delete _thrustSound;
-	_thrustSound = nullptr;
+	//delete _thrustSound;
+	//_thrustSound = nullptr;
 }
 
 void FighterCtrl::initComponent() {

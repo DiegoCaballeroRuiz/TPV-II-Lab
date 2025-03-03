@@ -21,6 +21,6 @@ protected:
 	float _speedLimit;
 
 	Transform* _transform;
-	SoundEffect* _thrustSound;
+	//SoundEffect* _thrustSound;
 };
 

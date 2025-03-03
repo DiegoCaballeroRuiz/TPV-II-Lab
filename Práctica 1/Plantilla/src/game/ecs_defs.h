@@ -16,7 +16,8 @@
 	HEALTH, \
 	FIGHTRCTRL, \
 	GUN, \
-	SHOWATOPPSTSIDE
+	SHOWATOPPSTSIDE, \
+	IMAGEWTEXTURE
 
 
 // Groups list - must have at least one element

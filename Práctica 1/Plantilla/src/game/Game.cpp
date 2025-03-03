@@ -4,6 +4,7 @@
 
 #include "../components/GameCtrl.h"
 #include "../components/Image.h"
+#include "../components/ImageWithFrames.h"
 #include "../components/DeAcceleration.h"
 #include "../components/StopOnBorders.h"
 #include "../components/Transform.h"
@@ -61,6 +62,8 @@ void Game::init() {
 	auto nave = _mngr->addEntity();
 	_mngr->setHandler(ecs::hdlr::SHIP, nave);
 
+	sdlutils().virtualTimer().resetTime();
+
 	auto transform = _mngr->addComponent<Transform>(nave);
 	float scale = 50.0f;
 	float x = (sdlutils().width() - scale) / 2.0f;
@@ -69,17 +72,17 @@ void Game::init() {
 
 	_mngr->addComponent<DeAcceleration>(nave);
 
-	_mngr->addComponent<Image>(nave, &sdlutils().images().at("pacman"));
+	_mngr->addComponent<Image>(nave, &sdlutils().images().at("asteroid"));
 
-	scale = 10.0f;
-	x = (sdlutils().width() - scale) * 0.2f;
-	y = (sdlutils().height() - scale) * 0.2f;
+	scale = 50.0f;
+	x = (sdlutils().width() - scale) * 0.01f;
+	y = (sdlutils().height() - scale) * 0.01f;
 	SDL_Rect heartPos = {x, y, scale, scale};
-	_mngr->addComponent<Health>(nave, heartPos, 10.0f, &sdlutils().images().at("pacman"));
+	_mngr->addComponent<Health>(nave, heartPos, 10.0f, &sdlutils().images().at("heart"));
 
 	_mngr->addComponent<FighterCtrl>(nave);
 
-	_mngr->addComponent<Gun>(nave, &sdlutils().images().at("pacman"));
+	_mngr->addComponent<Gun>(nave, &sdlutils().images().at("bullet"));
 
 	_mngr->addComponent<ShowAtOppositeSide>(nave);
 }
@@ -94,7 +97,7 @@ void Game::start() {
 	// reset the time before starting - so we calculate correct
 	// delta-time in the first iteration
 	//
-	sdlutils().resetTime();
+	sdlutils().virtualTimer().resetTime();
 
 	while (!exit) {
 		// store the current time -- all game objects should use this time when
@@ -123,46 +126,48 @@ void Game::start() {
 
 		if (frameTime < 10)
 			SDL_Delay(10 - frameTime);
+
+		sdlutils().virtualTimer().regCurrTime();
 	}
 
 }
 
 void Game::checkCollisions() {
-
-	// the PacMan's Transform
-	//
-	auto pacman = _mngr->getHandler(ecs::hdlr::PACMAN);
-	auto pTR = _mngr->getComponent<Transform>(pacman);
-
-	// the GameCtrl component
-	auto ginfo = _mngr->getHandler(ecs::hdlr::GAMEINFO);
-	auto gctrl = _mngr->getComponent<GameCtrl>(ginfo);
-
-	// For safety, we traverse with a normal loop until the current size. In this
-	// particular case we could use a for-each loop since the list stars is not
-	// modified.
-	//
-	auto &stars = _mngr->getEntities(ecs::grp::STARS);
-	auto n = stars.size();
-	for (auto i = 0u; i < n; i++) {
-		auto e = stars[i];
-		if (_mngr->isAlive(e)) { // if the star is active (it might have died in this frame)
-
-			// the Star's Transform
-			//
-			auto eTR = _mngr->getComponent<Transform>(e);
-
-			// check if PacMan collides with the Star (i.e., eat it)
-			if (Collisions::collides(pTR->getPos(), pTR->getWidth(),
-					pTR->getHeight(), //
-					eTR->getPos(), eTR->getWidth(), eTR->getHeight())) {
-				_mngr->setAlive(e, false);
-				gctrl->onStarEaten();
-
-				// play sound on channel 1 (if there is something playing there
-				// it will be cancelled
-				sdlutils().soundEffects().at("pacman_eat").play(0, 1);
-			}
-		}
-	}
+//
+//	// the PacMan's Transform
+//	//
+//	auto pacman = _mngr->getHandler(ecs::hdlr::PACMAN);
+//	auto pTR = _mngr->getComponent<Transform>(pacman);
+//
+//	// the GameCtrl component
+//	auto ginfo = _mngr->getHandler(ecs::hdlr::GAMEINFO);
+//	auto gctrl = _mngr->getComponent<GameCtrl>(ginfo);
+//
+//	// For safety, we traverse with a normal loop until the current size. In this
+//	// particular case we could use a for-each loop since the list stars is not
+//	// modified.
+//	//
+//	auto &stars = _mngr->getEntities(ecs::grp::STARS);
+//	auto n = stars.size();
+//	for (auto i = 0u; i < n; i++) {
+//		auto e = stars[i];
+//		if (_mngr->isAlive(e)) { // if the star is active (it might have died in this frame)
+//
+//			// the Star's Transform
+//			//
+//			auto eTR = _mngr->getComponent<Transform>(e);
+//
+//			// check if PacMan collides with the Star (i.e., eat it)
+//			if (Collisions::collides(pTR->getPos(), pTR->getWidth(),
+//					pTR->getHeight(), //
+//					eTR->getPos(), eTR->getWidth(), eTR->getHeight())) {
+//				_mngr->setAlive(e, false);
+//				gctrl->onStarEaten();
+//
+//				// play sound on channel 1 (if there is something playing there
+//				// it will be cancelled
+//				sdlutils().soundEffects().at("pacman_eat").play(0, 1);
+//			}
+//		}
+//	}
 }
