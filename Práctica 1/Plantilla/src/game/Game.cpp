@@ -79,11 +79,8 @@ void Game::init() {
 	y = (sdlutils().height() - scale) * 0.01f;
 	SDL_Rect heartPos = {x, y, scale, scale};
 	_mngr->addComponent<Health>(nave, heartPos, 10.0f, &sdlutils().images().at("heart"));
-
 	_mngr->addComponent<FighterCtrl>(nave);
-
 	_mngr->addComponent<Gun>(nave, &sdlutils().images().at("bullet"));
-
 	_mngr->addComponent<ShowAtOppositeSide>(nave);
 }
 
