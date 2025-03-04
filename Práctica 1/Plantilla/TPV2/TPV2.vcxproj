@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\components\DeAcceleration.cpp" />
     <ClCompile Include="..\src\components\FighterCtrl.cpp" />
+    <ClCompile Include="..\src\components\Follow.cpp" />
     <ClCompile Include="..\src\components\GameCtrl.cpp" />
     <ClCompile Include="..\src\components\Gun.cpp" />
     <ClCompile Include="..\src\components\Health.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="..\src\components\ShowAtOppositeSide.cpp" />
     <ClCompile Include="..\src\components\StarMotion.cpp" />
     <ClCompile Include="..\src\components\StopOnBorders.cpp" />
+    <ClCompile Include="..\src\components\TowardDestination.cpp" />
     <ClCompile Include="..\src\ecs\Manager.cpp" />
     <ClCompile Include="..\src\game\Game.cpp" />
     <ClCompile Include="..\SRC\json\JSON.cpp" />
@@ -143,6 +145,7 @@
     <ClInclude Include="..\lib\SDL2_ttf-2.24.0\include\SDL_ttf.h" />
     <ClInclude Include="..\src\components\DeAcceleration.h" />
     <ClInclude Include="..\src\components\FighterCtrl.h" />
+    <ClInclude Include="..\src\components\Follow.h" />
     <ClInclude Include="..\src\components\GameCtrl.h" />
     <ClInclude Include="..\src\components\Generations.h" />
     <ClInclude Include="..\src\components\Gun.h" />
@@ -153,6 +156,7 @@
     <ClInclude Include="..\src\components\ShowAtOppositeSide.h" />
     <ClInclude Include="..\src\components\StarMotion.h" />
     <ClInclude Include="..\src\components\StopOnBorders.h" />
+    <ClInclude Include="..\src\components\TowardDestination.h" />
     <ClInclude Include="..\src\components\Transform.h" />
     <ClInclude Include="..\src\ecs\Component.h" />
     <ClInclude Include="..\src\ecs\Entity.h" />
