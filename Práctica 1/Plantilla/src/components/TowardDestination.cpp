@@ -18,7 +18,7 @@ TowardDestination::initComponent() {
 void 
 TowardDestination::update() {
 	Vector2D distance = _destination - _transform->getPos();
-	_transform->getVel().rotate(_transform->getVel().angle(distance));
+	_transform->getVel() = _transform->getVel().rotate(_transform->getVel().angle(distance));
 	if (distance.magnitude() <= 10.0f) getRandomDestination();
 }
 

@@ -11,6 +11,7 @@ class TowardDestination : public ecs::Component {
 protected:
 	void getRandomDestination();
 public:
+	__CMPID_DECL__(ecs::cmp::TOWARDDESTINATION);
 	TowardDestination();
 
 	void initComponent() override;

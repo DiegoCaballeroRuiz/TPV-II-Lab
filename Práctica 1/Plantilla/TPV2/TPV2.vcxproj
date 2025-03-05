@@ -33,6 +33,8 @@
     <ClCompile Include="..\src\components\StopOnBorders.cpp" />
     <ClCompile Include="..\src\components\TowardDestination.cpp" />
     <ClCompile Include="..\src\ecs\Manager.cpp" />
+    <ClCompile Include="..\src\facade\AsteroidsFacade.cpp" />
+    <ClCompile Include="..\src\game\AsteroidsUtils.cpp" />
     <ClCompile Include="..\src\game\Game.cpp" />
     <ClCompile Include="..\SRC\json\JSON.cpp" />
     <ClCompile Include="..\SRC\json\JSONValue.cpp" />
@@ -161,6 +163,8 @@
     <ClInclude Include="..\src\ecs\Component.h" />
     <ClInclude Include="..\src\ecs\Entity.h" />
     <ClInclude Include="..\src\ecs\Manager.h" />
+    <ClInclude Include="..\src\facade\AsteroidsFacade.h" />
+    <ClInclude Include="..\src\game\AsteroidsUtils.h" />
     <ClInclude Include="..\src\game\ecs_defs.h" />
     <ClInclude Include="..\src\game\Game.h" />
     <ClInclude Include="..\SRC\json\JSON.h" />
