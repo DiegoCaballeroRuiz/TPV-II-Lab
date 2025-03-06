@@ -6,7 +6,7 @@ class Generations : public ecs::Component {
 	int _generation;
 public:
 	__CMPID_DECL__(ecs::cmp::GENERATIONS);
-	inline Generations(int initialGeneration = 1) : _generation(initialGeneration) {}
+	inline Generations(int initialGeneration = 3) : _generation(initialGeneration) {}
 
 	inline void advanceGeneration() { _generation++; }
 	inline void setGeneration(int gen) { _generation = gen; }

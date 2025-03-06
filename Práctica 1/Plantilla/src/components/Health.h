@@ -22,7 +22,7 @@ public:
 
 	inline int getHealth() const { return _currentHealth; }
 
-	inline void loseLife(int lives = 1) { _currentHealth -= lives; }
+	inline void addLife(int lives) { _currentHealth += lives; }
 	inline void resetLifes() { _currentHealth = _maxHealth; }
 
 	void render() override;

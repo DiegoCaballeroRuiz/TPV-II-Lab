@@ -3,14 +3,11 @@
 #include "Game.h"
 
 #include "../components/GameCtrl.h"
-#include "../components/Image.h"
-#include "../components/DeAcceleration.h"
+
 #include "../components/StopOnBorders.h"
-#include "../components/Health.h"
-#include "../components/FighterCtrl.h"
+
 #include "../components/Transform.h"
-#include "../components/ShowAtOppositeSide.h"
-#include "../components/Gun.h"
+
 #include "../ecs/Manager.h"
 #include "../sdlutils/InputHandler.h"
 #include "../sdlutils/SDLUtils.h"
@@ -61,28 +58,7 @@ void Game::init() {
 	_mngr = new Manager();
 
 	//Crear la nave
-	auto nave = _mngr->addEntity();
-	_mngr->setHandler(ecs::hdlr::SHIP, nave);
-
-
-	auto transform = _mngr->addComponent<Transform>(nave);
-	float scale = 50.0f;
-	float centerX = (sdlutils().width() - scale) / 2.0f;
-	float centerY = (sdlutils().height() - scale) / 2.0f;
-	transform->init(Vector2D(centerX, centerY), { 0, 0 }, scale, scale, 0.0f);
-
-	_mngr->addComponent<DeAcceleration>(nave);
-
-	_mngr->addComponent<Image>(nave, &sdlutils().images().at("ship"));
-
-	scale = 50.0f;
-	float heartX = (sdlutils().width() - scale) * 0.01f;
-	float heartY = (sdlutils().height() - scale) * 0.01f;
-	SDL_Rect heartPos = {heartX, heartY, scale, scale};
-	_mngr->addComponent<Health>(nave, heartPos, 10.0f, &sdlutils().images().at("heart"));
-	_mngr->addComponent<FighterCtrl>(nave);
-	_mngr->addComponent<Gun>(nave, &sdlutils().images().at("bullet"));
-	_mngr->addComponent<ShowAtOppositeSide>(nave);
+	
 
 	//Crear un asteroide 
 	
