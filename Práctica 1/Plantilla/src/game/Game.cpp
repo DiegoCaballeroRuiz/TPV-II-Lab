@@ -8,6 +8,10 @@
 
 #include "../components/Transform.h"
 
+
+#include "FighterUtils.h"
+#include "AsteroidsUtils.h"
+
 #include "../ecs/Manager.h"
 #include "../sdlutils/InputHandler.h"
 #include "../sdlutils/SDLUtils.h"
@@ -17,7 +21,9 @@
 using ecs::Manager;
 
 Game::Game() :
-		_mngr(nullptr) {
+		_mngr(nullptr), _asteroidUtils(nullptr), _fighterUtils(nullptr)
+		
+{
 }
 
 Game::~Game() {
@@ -32,14 +38,14 @@ Game::~Game() {
 		SDLUtils::Release();
 }
 
-void Game::init() {
+bool Game::init() {
 
 	//initialize the SDL singleton
 	if (!SDLUtils::Init("PacMan, Stars, ...", 800, 600,
 		"../resources/config/resources.json")) {
 		std::cerr << "Something went wrong while initializing SDLUtils"
 			<< std::endl;
-		return;
+		return false;
 
 	}
 
@@ -47,9 +53,14 @@ void Game::init() {
 	if (!InputHandler::Init()) {
 		std::cerr << "Something went wrong while initializing SDLHandler"
 				<< std::endl;
-		return;
+		return false;
 
 	}
+
+	return true;
+}
+
+void Game::initGame() {
 
 	//Start virtual timer
 	sdlutils().virtualTimer().resetTime();
@@ -58,10 +69,14 @@ void Game::init() {
 	_mngr = new Manager();
 
 	//Crear la nave
-	
+	_fighterUtils = new FighterUtils(_mngr);
+
+	_fighterUtils->create_fighter();
 
 	//Crear un asteroide 
-	
+	_asteroidUtils = new AsteroidsUtils(_mngr);
+
+	_asteroidUtils->create_asteroids(3);
 }
 
 void Game::start() {
@@ -87,7 +102,6 @@ void Game::start() {
 
 		if (ihdlr.isKeyDown(SDL_SCANCODE_ESCAPE)) {
 			exit = true;
-			continue;
 		}
 
 		_mngr->update();

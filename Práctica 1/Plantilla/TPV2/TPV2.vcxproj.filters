@@ -96,10 +96,10 @@
     <ClCompile Include="..\src\components\TowardDestination.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\facade\AsteroidsFacade.cpp">
+    <ClCompile Include="..\src\game\AsteroidsUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\game\AsteroidsUtils.cpp">
+    <ClCompile Include="..\src\game\FighterUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -519,6 +519,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\game\AsteroidsUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\facade\FighterFacade.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\game\FighterUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\game\GameState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

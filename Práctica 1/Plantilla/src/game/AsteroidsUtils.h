@@ -3,7 +3,6 @@
 #include "../utils/Vector2D.h"
 namespace ecs {
 	class Manager;
-	struct entity_t;
 }
 class AsteroidsUtils : public AsteroidsFacade {
 	ecs::Manager* _manager;
@@ -11,7 +10,7 @@ class AsteroidsUtils : public AsteroidsFacade {
 	void create_asteroid(Vector2D p, Vector2D v, int gen);
 public:
 	AsteroidsUtils(ecs::Manager* manager);
-	~AsteroidsUtils();
+	~AsteroidsUtils() override;
 
 	void create_asteroids(int n) override;
 	void remove_all_asteroids() override;

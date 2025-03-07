@@ -10,7 +10,7 @@ class FighterUtils : public FighterFacade {
 	ecs::Manager* _mngr;
 public:
 	FighterUtils(ecs::Manager* manager);
-	~FighterUtils() {}
+	~FighterUtils() override {}
 	void create_fighter();
 	void reset_fighter();
 	void reset_lives();

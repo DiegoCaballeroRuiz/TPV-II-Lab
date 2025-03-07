@@ -17,10 +17,6 @@ FighterUtils::FighterUtils(ecs::Manager* manager) : FighterFacade(), _mngr(manag
 {
 }
 
-FighterUtils::~FighterUtils() {
-
-}
-
 void 
 FighterUtils::create_fighter() {
 	auto nave = _mngr->addEntity();
@@ -49,6 +45,7 @@ FighterUtils::create_fighter() {
 
 void 
 FighterUtils::reset_fighter() {
+	if (_mngr->getHandler(ecs::hdlr::SHIP) == nullptr) return;
 	auto transform = _mngr->getComponent<Transform>(_mngr->getHandler(ecs::hdlr::SHIP));
 
 	float centerX = (sdlutils().width() - transform->getWidth()) / 2.0f;
@@ -60,11 +57,16 @@ FighterUtils::reset_fighter() {
 
 void 
 FighterUtils::reset_lives() {
+	if (_mngr->getHandler(ecs::hdlr::SHIP) == nullptr) return;
+
 	_mngr->getComponent<Health>(_mngr->getHandler(ecs::hdlr::SHIP))->resetLifes();
 }
 
 int 
 FighterUtils::update_lives(int n) {
-	_mngr->getComponent<Health>(_mngr->getHandler(ecs::hdlr::SHIP))->addLife(n);
+	if (_mngr->getHandler(ecs::hdlr::SHIP) == nullptr) return;
 
+	auto health = _mngr->getComponent<Health>(_mngr->getHandler(ecs::hdlr::SHIP));
+	health->addLife(n);
+	return health->getHealth();
 }

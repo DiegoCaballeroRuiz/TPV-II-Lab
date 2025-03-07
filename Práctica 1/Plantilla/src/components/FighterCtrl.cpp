@@ -13,8 +13,9 @@ FighterCtrl::FighterCtrl() : Component(), _rotationDegrees(5.0f), _thrust(0.2), 
 }
 
 FighterCtrl::~FighterCtrl() {
-	delete _transform;
-	_transform = nullptr;
+	if (_transform != nullptr) {
+		_transform = nullptr;
+	}
 
 	//delete _thrustSound;
 	//_thrustSound = nullptr;
