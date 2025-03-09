@@ -29,7 +29,7 @@ ImageWithFrames::render() {
 		}
 	}
 	SDL_Rect src = { _frameWidth * _currentFrameX, _frameHeight * _currentFrameY, _frameWidth, _frameHeight };
-	SDL_Rect dest = { _transform->getPos().getX(), _transform->getPos().getY(), _frameWidth, _frameHeight };
+	SDL_Rect dest = { _transform->getPos().getX(), _transform->getPos().getY(), _transform->getWidth(), _transform->getHeight()};
 
 	_texture->render(src, dest);
 }

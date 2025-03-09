@@ -18,6 +18,11 @@
 #include "../utils/Vector2D.h"
 #include "../utils/Collisions.h"
 
+#include "NewGameState.h"
+#include "NewRoundState.h"
+#include "RunningState.h"
+#include "PausedState.h"
+#include "GameOverState.h"
 using ecs::Manager;
 
 Game::Game() :
@@ -68,6 +73,14 @@ void Game::initGame() {
 	// Create the manager
 	_mngr = new Manager();
 
+	//Inicializar los estados de juego
+	_newgame_state = new NewGameState(this);
+	_newround_state = new NewRoundState(this);
+	_runing_state = new RunningState(this, _mngr);
+	_paused_state = new PausedState(this);
+	_gameover_state = new GameOverState(this);
+
+	_state = _newgame_state;
 	//Crear la nave
 	_fighterUtils = new FighterUtils(_mngr);
 
@@ -104,14 +117,7 @@ void Game::start() {
 			exit = true;
 		}
 
-		_mngr->update();
-		_mngr->refresh();
-
-		checkCollisions();
-
-		sdlutils().clearRenderer();
-		_mngr->render();
-		sdlutils().presentRenderer();
+		_state->update();
 
 		Uint32 frameTime = sdlutils().currRealTime() - startTime;
 
@@ -120,7 +126,6 @@ void Game::start() {
 
 		sdlutils().virtualTimer().regCurrTime();
 	}
-
 }
 
 void Game::checkCollisions() {

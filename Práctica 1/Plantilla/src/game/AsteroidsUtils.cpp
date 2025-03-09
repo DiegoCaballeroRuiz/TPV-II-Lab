@@ -45,9 +45,9 @@ void
 AsteroidsUtils::remove_all_asteroids() {
 	auto asteroids = _manager->getEntities(ecs::grp::ASTEROIDS);
 
-	for (auto asteroid : asteroids) delete asteroid;
+	for (auto asteroid : asteroids) _manager->setAlive(asteroid, false);
 
-	asteroids.clear();
+	_manager->refresh();
 }
 
 void 
@@ -75,7 +75,7 @@ AsteroidsUtils::create_asteroid(Vector2D p, Vector2D v, int gen) {
 	//Crear el transform
 	auto transform = _manager->addComponent<Transform>(asteroide);
 
-	const float scale = 10.0f + 5.0f * gen;
+	const float scale = 25.0f + 5.0f * gen;
 	
 	transform->init(p, v, scale, scale, 0.0f);
 
@@ -96,4 +96,9 @@ AsteroidsUtils::create_asteroid(Vector2D p, Vector2D v, int gen) {
 
 	//Crear generation
 	_manager->addComponent<Generations>(asteroide, gen);
+}
+
+int 
+AsteroidsUtils::getNumberOfAsteroids() {
+	return _manager->getEntities(ecs::grp::ASTEROIDS).size();
 }

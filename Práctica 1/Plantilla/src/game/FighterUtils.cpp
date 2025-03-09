@@ -64,7 +64,7 @@ FighterUtils::reset_lives() {
 
 int 
 FighterUtils::update_lives(int n) {
-	if (_mngr->getHandler(ecs::hdlr::SHIP) == nullptr) return;
+	if (_mngr->getHandler(ecs::hdlr::SHIP) == nullptr) return -1;
 
 	auto health = _mngr->getComponent<Health>(_mngr->getHandler(ecs::hdlr::SHIP));
 	health->addLife(n);
