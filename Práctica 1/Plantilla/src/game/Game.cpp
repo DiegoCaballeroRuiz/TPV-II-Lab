@@ -2,7 +2,6 @@
 
 #include "Game.h"
 
-#include "../components/GameCtrl.h"
 
 #include "../components/StopOnBorders.h"
 
@@ -89,7 +88,7 @@ void Game::initGame() {
 	//Crear un asteroide 
 	_asteroidUtils = new AsteroidsUtils(_mngr);
 
-	_asteroidUtils->create_asteroids(3);
+	//_asteroidUtils->create_asteroids(3);
 }
 
 void Game::start() {

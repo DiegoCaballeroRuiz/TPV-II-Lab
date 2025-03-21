@@ -26,7 +26,7 @@ PausedState::leave() {
 
 void 
 PausedState::update() {
-	SDL_Rect dest = { sdlutils().width() / 2, sdlutils().height() / 2, 100, 20 };
+	SDL_Rect dest = { sdlutils().width() / 2 - 250, sdlutils().height() / 2 - 25, 500, 50 };
 
 	sdlutils().clearRenderer();
 	sdlutils().msgs().at("paused").render(dest);

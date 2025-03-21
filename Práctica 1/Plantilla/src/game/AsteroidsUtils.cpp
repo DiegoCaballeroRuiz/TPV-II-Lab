@@ -86,7 +86,7 @@ AsteroidsUtils::create_asteroid(Vector2D p, Vector2D v, int gen) {
 	_manager->addComponent<ShowAtOppositeSide>(asteroide);
 
 	//Crear follow o towards
-	if (sdlutils().rand().nextInt(0, 1)) {
+	if (sdlutils().rand().nextInt(0, 2)) {
 		auto target = _manager->getComponent<Transform>(_manager->getHandler(ecs::hdlr::SHIP));
 		_manager->addComponent<Follow>(asteroide, target);
 	}

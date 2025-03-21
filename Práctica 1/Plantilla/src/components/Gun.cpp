@@ -47,6 +47,8 @@ void Gun::shoot(Vector2D p, Vector2D v, int width, int height, float r) {
 
 	_bullets[_lastBullet] = { true, p, v, width, height, r };
 	_lastShootingTime = sdlutils().virtualTimer().currTime();
+
+	sdlutils().soundEffects().at("gunshot").play();
 }
 
 void Gun::update() {
