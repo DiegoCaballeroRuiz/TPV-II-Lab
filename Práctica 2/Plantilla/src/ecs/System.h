@@ -15,7 +15,7 @@ namespace ecs {
 class System {
 public:
 	System() :
-			_mngr(nullptr) {
+			_manager(nullptr) {
 	}
 
 	//IMPORTANT: do not delete the reference to the manager on destruction
@@ -26,7 +26,7 @@ public:
 	// to the manager
 	//
 	void setContext(Manager *mngr) {
-		_mngr = mngr;
+		_manager = mngr;
 	}
 
 	// will be called after crating the system to initialise whatever should
@@ -51,7 +51,7 @@ public:
 	}
 
 protected:
-	Manager *_mngr;
+	Manager *_manager;
 };
 
 } // end of namespace

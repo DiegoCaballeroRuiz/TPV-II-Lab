@@ -28,18 +28,18 @@ void RenderSystem::update() {
 
 void RenderSystem::drawStars() {
 	// draw stars
-	for (auto e : _mngr->getEntities(ecs::grp::STARS)) {
+	for (auto e : _manager->getEntities(ecs::grp::STARS)) {
 
-		auto tr = _mngr->getComponent<Transform>(e);
-		auto tex = _mngr->getComponent<Image>(e)->_tex;
+		auto tr = _manager->getComponent<Transform>(e);
+		auto tex = _manager->getComponent<Image>(e)->_tex;
 		draw(tr, tex);
 	}
 }
 
 void RenderSystem::drawPacMan() {
-	auto e = _mngr->getHandler(ecs::hdlr::PACMAN);
-	auto tr = _mngr->getComponent<Transform>(e);
-	auto tex = _mngr->getComponent<Image>(e)->_tex;
+	auto e = _manager->getHandler(ecs::hdlr::PACMAN);
+	auto tr = _manager->getComponent<Transform>(e);
+	auto tex = _manager->getComponent<Image>(e)->_tex;
 	draw(tr, tex);
 
 }
@@ -48,7 +48,7 @@ void RenderSystem::drawPacMan() {
 void RenderSystem::drawMsgs() {
 	// draw the score
 	//
-	auto score = _mngr->getSystem<GameCtrlSystem>()->getScore();
+	auto score = _manager->getSystem<GameCtrlSystem>()->getScore();
 
 	Texture scoreTex(sdlutils().renderer(), std::to_string(score),
 			sdlutils().fonts().at("ARIAL24"), build_sdlcolor(0x444444ff));

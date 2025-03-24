@@ -28,7 +28,7 @@ void GameCtrlSystem::update() {
 			Message m;
 			m.id = _m_CREATE_STARS;
 			m.create_stars_data.n = 5;
-			_mngr->send(m);
+			_manager->send(m);
 		}
 	}
 }
@@ -36,7 +36,7 @@ void GameCtrlSystem::update() {
 void GameCtrlSystem::recieve(const Message &m) {
 	switch (m.id) {
 	case _m_STAR_EATEN:
-		_score += _mngr->getComponent<Points>(m.star_eaten_data.e)->_points;
+		_score += _manager->getComponent<Points>(m.star_eaten_data.e)->_points;
 		break;
 	default:
 		break;

@@ -5,7 +5,7 @@
 #include "../ecs/System.h"
 
 struct Transform;
-
+struct Health;
 class PacManSystem: public ecs::System {
 public:
 
@@ -13,7 +13,9 @@ public:
 	virtual ~PacManSystem();
 	void initSystem() override;
 	void update() override;
+	void recieve(const Message& msg) override;
 private:
-	Transform *_pmTR;
+	Transform *_pacManTransform;
+	Health* _pacManHealth;
 };
 
