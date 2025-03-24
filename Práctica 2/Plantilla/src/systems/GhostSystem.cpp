@@ -41,6 +41,7 @@ GhostSystem::update() {
 		//Intentar cambiar direccion
 
 		//Mover
+
 	}
 
 }
