@@ -38,15 +38,35 @@ GhostSystem::update() {
 	}
 
 	for (auto ghost : ghosts) {
+		auto transform = _manager->getComponent<Transform>(ghost);
+
 		//Intentar cambiar direccion
+		int chance = sdlutils().rand().nextInt(0, 1001);
+		if (chance <= 5) transform->_vel = (transform->_pos - pacManTransform->_pos);
+		
+		//Comprobar bordes
+		if (transform->_pos.getX() < 0 && transform->_vel.getX() < 0
+			|| transform->_pos.getX() > sdlutils().width() && transform->_vel.getX() > 0) 
+		{
+			transform->_vel.setX(-transform->_vel.getX());
+		}
+
+		if (transform->_pos.getY() < 0 && transform->_vel.getY() < 0
+			|| transform->_pos.getY() > sdlutils().height() && transform->_vel.getY() > 0)
+		{
+			transform->_vel.setY(-transform->_vel.getY());
+		}
 
 		//Mover
-
+		transform->_pos = transform->_pos + transform->_vel;
 	}
-
 }
 
 void 
 GhostSystem::recieve(const Message& msg) {
-
+	if (msg.id == msgId::_m_ROUND_START) {
+		auto ghosts = _manager->getEntities(_ghostGroup);
+		for (auto ghost : ghosts) delete ghost;
+		ghosts.clear();
+	}
 }

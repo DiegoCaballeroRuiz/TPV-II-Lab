@@ -18,7 +18,7 @@ struct Points;
 // Groups list - must have at least one element
 //
 #define _GRPS_LIST_ \
-	STARS, \
+	FRUITS, \
 	GHOSTS, \
 
 // Handlers list - must have at least one element
@@ -28,16 +28,18 @@ struct Points;
 
 // Systems list - must have at least one element
 //
-class StarsSystem;
+class FruitsSystem;
 class RenderSystem;
 class PacManSystem;
 class GameCtrlSystem;
 class CollisionsSystem;
+class GhostsSystems;
 
 #define _SYS_LIST_ \
-    StarsSystem, \
+    FruitsSystem, \
 	RenderSystem, \
 	PacManSystem, \
 	GameCtrlSystem, \
-	CollisionsSystem
+	CollisionsSystem, \
+	GhostsSystems
 
