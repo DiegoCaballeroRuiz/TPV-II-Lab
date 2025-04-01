@@ -69,4 +69,5 @@ GhostSystem::recieve(const Message& msg) {
 		for (auto ghost : ghosts) delete ghost;
 		ghosts.clear();
 	}
+	if (msg.id == msgId::_m_IMMUNITY_START)
 }
