@@ -17,5 +17,6 @@ public:
 private:
 	Transform *_pacManTransform;
 	Health* _pacManHealth;
+
 };
 

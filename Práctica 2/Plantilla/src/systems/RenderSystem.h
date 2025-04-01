@@ -5,6 +5,7 @@
 
 class Texture;
 struct Transform;
+class SDL_Rect;
 
 class RenderSystem: public ecs::System {
 public:
@@ -14,9 +15,13 @@ public:
 	void initSystem() override;
 	void update() override;
 private:
-	void drawStars();
+	void drawFruits();
 	void drawPacMan();
+	void drawGhosts();
 	void drawMsgs();
 	void draw(Transform *tr, Texture *tex);
+	void drawSrc(Transform* tr, Texture* tex, SDL_Rect src);
+
+	SDL_Rect _cherrySrcRect, _pearSrcRect, _ghostSrcRect;
 };
 

@@ -42,6 +42,10 @@
     {
       "id": "heart",
       "file": "../resources/images/heart.png"
+    },
+    {
+       "id": "spritesheet",
+       "file": "../resources/images/pacman_sprites.png"
     }
   ],
 

@@ -10,6 +10,7 @@
 #include "../systems/PacManSystem.h"
 #include "../systems/RenderSystem.h"
 #include "../systems/StarsSystem.h"
+#include "../systems/FruitSystem.h"
 #include "../utils/Vector2D.h"
 #include "../utils/Collisions.h"
 
@@ -19,7 +20,7 @@ Game::Game() :
 		_mngr(), //
 		_pacmanSys(), //
 		_gameCtrlSys(), //
-		_startsSys(), //
+		_fruitSys(), //
 		_renderSys(), //
 		_collisionSys() {
 
@@ -65,6 +66,7 @@ void Game::init() {
 	_gameCtrlSys = _mngr->addSystem<GameCtrlSystem>();
 	_renderSys = _mngr->addSystem<RenderSystem>();
 	_collisionSys = _mngr->addSystem<CollisionsSystem>();
+	_fruitSys = _mngr->addSystem<FruitSystem>();
 }
 
 void Game::start() {
@@ -73,6 +75,8 @@ void Game::start() {
 	bool exit = false;
 
 	auto &ihdlr = ih();
+	sdlutils().virtualTimer().resetTime();
+	sdlutils().virtualTimer().resume();
 
 	while (!exit) {
 		Uint32 startTime = sdlutils().currRealTime();
@@ -86,7 +90,6 @@ void Game::start() {
 		}
 
 		_pacmanSys->update();
-		_startsSys->update();
 		_gameCtrlSys->update();
 		_collisionSys->update();
 
@@ -100,6 +103,8 @@ void Game::start() {
 
 		if (frameTime < 10)
 			SDL_Delay(10 - frameTime);
+
+		sdlutils().virtualTimer().regCurrTime();
 	}
 
 }
