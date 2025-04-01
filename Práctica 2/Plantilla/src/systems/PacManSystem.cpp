@@ -8,6 +8,8 @@
 #include "../sdlutils/InputHandler.h"
 #include "../sdlutils/SDLUtils.h"
 #include "../components/Health.h"
+#include "../components/Miraculous.h"
+#include "../components/Inmunity.h"
 
 PacManSystem::PacManSystem() :
 		_pacManTransform(nullptr) {
@@ -29,6 +31,7 @@ void PacManSystem::initSystem() {
 
 	_manager->addComponent<Image>(pacman, &sdlutils().images().at("pacman"));
 	_manager->addComponent<Health>(pacman);
+	_manager->addComponent<Inmunity>(pacman);
 }
 
 void PacManSystem::update() {
@@ -84,5 +87,44 @@ PacManSystem::recieve(const Message& msg) {
 
 	else if (msg.id == msgId::_m_NEW_GAME) {
 		_pacManHealth->lives = _pacManHealth->maxLives;
+	}
+
+	else if (msg.id == msgId::_m_PACMAN_FOOD_COLLISION) {
+		auto fruit = msg.fruit_eaten.e;
+		_manager->setAlive(fruit, false);
+
+		if (_manager->hasComponent<Miraculous>(fruit)
+			&& _manager->getComponent<Miraculous>(fruit)->_state) {
+			Message m;
+			m.id = msgId::_m_IMMUNITY_START;
+			_manager->send(m);
+		}
+	}
+
+	else if (msg.id == msgId::_m_PACMAN_GHOST_COLLISION) {
+		auto pacman = _manager->getHandler(ecs::hdlr::PACMAN);
+		auto ghost = msg.ghost_hit.e;
+
+		if (_manager->getComponent<Inmunity>(pacman)->_inmune) _manager->setAlive(ghost, false);
+		else {
+			Message m;
+			m.id = msgId::_m_ROUND_OVER;
+			_manager->send(m);
+		}
+	}
+
+	else if (msg.id == msgId::_m_ROUND_OVER) {
+		auto health = _manager->getComponent<Health>(_manager->getHandler(ecs::hdlr::PACMAN));
+
+		health->lives--;
+
+		if (health->lives <= 0) {
+			Message m;
+			m.id = msgId::_m_GAME_OVER;
+			_manager->send(m);
+		}
+	}
+
+	else if (msg.id == msgId::_m_IMMUNITY_START) {
 	}
 }

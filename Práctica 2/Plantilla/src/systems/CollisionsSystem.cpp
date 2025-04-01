@@ -22,22 +22,18 @@ void CollisionsSystem::initSystem() {
 void CollisionsSystem::update() {
 
 	// the PacMan's Transform
-	//
 	auto pm = _manager->getHandler(ecs::hdlr::PACMAN);
 	auto pTR = _manager->getComponent<Transform>(pm);
 
-	// For safety, we traverse with a normal loop until the current size. In this
-	// particular case we could use a for-each loop since the list stars is not
-	// modified.
-	//
-	auto &stars = _manager->getEntities(ecs::grp::FRUITS);
-	auto n = stars.size();
-	for (auto i = 0u; i < n; i++) {
-		auto e = stars[i];
+	//Fruta
+	auto &fruits = _manager->getEntities(ecs::grp::FRUITS);
+	int n = fruits.size();
+
+	for (int i = 0; i < n; i++) {
+		auto e = fruits[i];
 		if (_manager->isAlive(e)) { // if the star is active (it might have died in this frame)
 
 			// the Star's Transform
-			//
 			auto eTR = _manager->getComponent<Transform>(e);
 
 			// check if PacMan collides with the Star (i.e., eat it)
@@ -46,13 +42,33 @@ void CollisionsSystem::update() {
 					eTR->_pos, eTR->_width, eTR->_height)) {
 
 				Message m;
-				m.id = _m_STAR_EATEN;
-				m.star_eaten_data.e = e;
+				m.id = msgId::_m_PACMAN_FOOD_COLLISION;
+				m.fruit_eaten.e = e;
 				_manager->send(m);
-
 			}
 		}
 	}
 
+	//Fantasmas
+	auto& ghosts = _manager->getEntities(ecs::grp::GHOSTS);
+	n = ghosts.size();
+
+	for (int i = 0; i < n; i++) {
+		auto ghost = ghosts[i];
+
+		if (_manager->isAlive(ghost)) {
+			auto transform = _manager->getComponent<Transform>(ghost);
+
+			if (Collisions::collides(			//
+				pTR->_pos, pTR->_width, pTR->_height, //
+				transform->_pos, transform->_width, transform->_height)) {
+
+				Message m;
+				m.id = msgId::_m_PACMAN_GHOST_COLLISION;
+				m.ghost_hit.e = ghost;
+				_manager->send(m);
+			}
+		}
+	}
 }
 

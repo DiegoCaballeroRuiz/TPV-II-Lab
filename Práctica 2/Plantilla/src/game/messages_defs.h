@@ -30,9 +30,31 @@ struct Message {
 			unsigned int n;
 		} create_stars_data;
 
+		//Round starts
 		struct {
 
 		} round_starts;
 
+		//Fruit eaten
+		struct {
+			ecs::entity_t e;
+		} fruit_eaten;
+
+		//Ghost hit
+		struct {
+			ecs::entity_t e;
+		} ghost_hit;
+
+		struct {
+
+		} inmunity_start;
+
+		struct {
+
+		} round_over;
+
+		struct {
+
+		} game_over;
 	};
 };
