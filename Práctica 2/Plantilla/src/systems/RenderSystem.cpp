@@ -5,6 +5,7 @@
 #include "../components/Image.h"
 #include "../components/Transform.h"
 #include "../components/Miraculous.h"
+#include "../components/TextureSrc.h"
 #include "../ecs/Manager.h"
 #include "../sdlutils/macros.h"
 #include "../sdlutils/SDLUtils.h"
@@ -12,9 +13,7 @@
 #include "GameCtrlSystem.h"
 
 RenderSystem::RenderSystem() {
-	_cherrySrcRect = build_sdlrect(128 * 5, 128 * 2, 128, 128);
-	_pearSrcRect = build_sdlrect(128 * 8, 128 * 2, 128, 128);
-	_ghostSrcRect = build_sdlrect(128 * 5, 128 * 5, 128, 128);
+	
 }
 
 RenderSystem::~RenderSystem() {
@@ -37,14 +36,7 @@ void RenderSystem::drawFruits() {
 		auto tr = _manager->getComponent<Transform>(e);
 		auto tex = _manager->getComponent<Image>(e)->_tex;
 
-		SDL_Rect src;
-		if (_manager->hasComponent<Miraculous>(e)) {
-			bool type = _manager->getComponent<Miraculous>(e)->_state;
-			src = type
-				? _cherrySrcRect
-				: _pearSrcRect;
-		}
-		else src = _cherrySrcRect;
+		auto src = _manager->getComponent<TextureSrc>(e)->_src;
 
 		drawSrc(tr, tex, src);
 	}
@@ -61,7 +53,8 @@ void RenderSystem::drawGhosts() {
 	for (auto ghost : _manager->getEntities(ecs::grp::GHOSTS)) {
 		auto tr = _manager->getComponent<Transform>(ghost);
 		auto tex = _manager->getComponent<Image>(ghost)->_tex;
-		draw(tr, tex);
+		auto src = _manager->getComponent<TextureSrc>(ghost)->_src;
+		drawSrc(tr, tex, src);
 	}
 }
 

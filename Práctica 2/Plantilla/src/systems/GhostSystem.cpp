@@ -2,8 +2,9 @@
 #include "../sdlutils/SDLUtils.h"
 #include "../ecs/Manager.h"
 #include "../components/Transform.h"
+#include "../components/TextureSrc.h"
 
-GhostSystem::GhostSystem() : _spawnDelay(5000.0f), _ghostGroup(ecs::grp::GHOSTS), _ghostSpeed(1.1f),
+GhostSystem::GhostSystem() : _spawnDelay(5000.0f), _ghostGroup(ecs::grp::GHOSTS), _ghostSpeed(1.1f), _canSpawn(true),
 _spawnPoints({
 	Vector2D(0, 0),
 	Vector2D(sdlutils().width(), 0),
@@ -11,6 +12,8 @@ _spawnPoints({
 	Vector2D(sdlutils().width(), sdlutils().height())
 	})
 {
+	_defaultSrcRect = build_sdlrect(128 * 5, 128 * 5, 128, 128);
+	_blueSrcRect = build_sdlrect(128 * 6, 128 * 3, 128, 128);
 }
 
 GhostSystem::~GhostSystem() {}
@@ -26,7 +29,7 @@ GhostSystem::update() {
 	auto ghosts = _manager->getEntities(_ghostGroup);
 	auto pacManTransform = _manager->getComponent<Transform>(_manager->getHandler(ecs::hdlr::PACMAN));
 	//Intentar spawnear fantasma
-	if (ghosts.size() < 10 && sdlutils().virtualTimer().currTime() >= _lastGhostSpawnTime + _spawnDelay) {
+	if (_canSpawn && ghosts.size() < 10 && sdlutils().virtualTimer().currTime() >= _lastGhostSpawnTime + _spawnDelay) {
 		ecs::entity_t ghost = new ecs::Entity(_ghostGroup);
 
 		float scale = 25.0f;
@@ -65,9 +68,31 @@ GhostSystem::update() {
 void 
 GhostSystem::recieve(const Message& msg) {
 	if (msg.id == msgId::_m_ROUND_START) {
+		
+		_lastGhostSpawnTime = sdlutils().virtualTimer().currTime();
+	}
+
+	else if (msg.id == msgId::_m_ROUND_OVER) {
 		auto ghosts = _manager->getEntities(_ghostGroup);
 		for (auto ghost : ghosts) delete ghost;
 		ghosts.clear();
 	}
-	if (msg.id == msgId::_m_IMMUNITY_START)
+
+	else if (msg.id == msgId::_m_IMMUNITY_START) {
+		auto ghosts = _manager->getEntities(_ghostGroup);
+		for (auto ghost : ghosts) {
+			auto texSrc = _manager->getComponent<TextureSrc>(ghost);
+			texSrc->_src = _blueSrcRect;
+		}
+		_canSpawn = false;
+	}
+
+	else if (msg.id == msgId::_m_IMMUNITY_END) {
+		auto ghosts = _manager->getEntities(_ghostGroup);
+		for (auto ghost : ghosts) {
+			auto texSrc = _manager->getComponent<TextureSrc>(ghost);
+			texSrc->_src = _defaultSrcRect;
+		}
+		_canSpawn = true;
+	}
 }

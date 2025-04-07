@@ -506,5 +506,8 @@
     <ClInclude Include="..\src\components\Miraculous.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\components\TextureSrc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

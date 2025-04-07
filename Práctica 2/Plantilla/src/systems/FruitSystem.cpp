@@ -6,11 +6,14 @@
 #include "../components/Transform.h"
 #include "../components/Image.h"
 #include "../components/Miraculous.h"
+#include "../components/TextureSrc.h"
 
 FruitSystem::FruitSystem() 
 	: System(), _grid(), _fruitGroup(ecs::grp::FRUITS)
 {
 	initGrid();
+	_cherrySrcRect = build_sdlrect(128 * 5, 128 * 2, 128, 128);
+	_pearSrcRect = build_sdlrect(128 * 8, 128 * 2, 128, 128);
 }
 
 FruitSystem::~FruitSystem() {
@@ -27,6 +30,11 @@ FruitSystem::initGrid() {
 
 void
 FruitSystem::initSystem() {
+	
+}
+
+void 
+FruitSystem::createFruits() {
 	int nFruits = N_ROWS * N_COLUMNS;
 
 	auto fruits = _manager->getEntities(_fruitGroup);
@@ -44,23 +52,70 @@ FruitSystem::initSystem() {
 		transform->init(Vector2D(x, y), Vector2D(), scale, scale, 0.0f);
 
 		//Image
-		_manager->addComponent<Image>(fruit, sdlutils().images().at("spritesheet"));
+		_manager->addComponent<Image>(fruit, &sdlutils().images().at("spritesheet"));
+
+		//TextureSrc
+		_manager->addComponent<TextureSrc>(fruit, _cherrySrcRect);
 
 		//Miraculous
-		if (sdlutils().rand().nextInt(1, 101) <= 10) {
-			auto miraculous = _manager->addComponent<Miraculous>(fruit);
-			miraculous->_state = Miraculous::NORMAL;
-			miraculous->N = sdlutils().rand().nextInt(10, 21);
-		}
+		if (sdlutils().rand().nextInt(1, 101) <= 10)
+			_manager->addComponent<Miraculous>(fruit, Miraculous::NORMAL, sdlutils().rand().nextInt(10, 21));
 	}
 }
 
 void 
 FruitSystem::update() {
+	auto fruits = _manager->getEntities(_fruitGroup);
 
+	for (auto fruit : fruits) {
+		if (_manager->hasComponent<Miraculous>(fruit)) {
+			Miraculous* miraculous = _manager->getComponent<Miraculous>(fruit);
+
+			if (miraculous->_state == Miraculous::MIRACULOUS 
+				&& sdlutils().virtualTimer().currTime() - miraculous->T > miraculous->M * 1000) {
+				
+				miraculous->_state = Miraculous::NORMAL;
+				miraculous->T = sdlutils().virtualTimer().currTime();
+
+				auto src = _manager->getComponent<TextureSrc>(fruit);
+				src->_src = _cherrySrcRect;
+			}
+			else if (miraculous->_state == Miraculous::NORMAL
+				&& sdlutils().virtualTimer().currTime() - miraculous->T > miraculous->N * 1000) {
+
+				miraculous->_state = Miraculous::MIRACULOUS;
+				miraculous->T = sdlutils().virtualTimer().currTime();
+				miraculous->M = sdlutils().rand().nextInt(1, 6);
+
+				auto src = _manager->getComponent<TextureSrc>(fruit);
+				src->_src = _pearSrcRect;
+			}
+		}
+	}
 }
 
 void 
 FruitSystem::recieve(const Message& msg) {
+	if (msg.id == msgId::_m_NEW_GAME) {
+		createFruits();
+	}
 
+	else if (msg.id == msgId::_m_ROUND_START) {
+		auto fruits = _manager->getEntities(_fruitGroup);
+		for (auto fruit : fruits) {
+			if (_manager->hasComponent<Miraculous>(fruit)) {
+				Miraculous* miraculous = _manager->getComponent<Miraculous>(fruit);
+				miraculous->T = sdlutils().virtualTimer().currTime();
+			}
+		}
+	}
+
+	else if (msg.id == msgId::_m_GAME_OVER) {
+		auto fruits = _manager->getEntities(_fruitGroup);
+
+		for (auto fruit : fruits)
+			delete fruit;
+
+		fruits.clear();
+	}
 }

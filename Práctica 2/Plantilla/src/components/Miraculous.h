@@ -10,9 +10,8 @@ struct Miraculous : public ecs::Component {
 
 	Miraculous(int n) : _state(NORMAL), N(n) {}
 	Miraculous(State state, int n) : _state(state), N(n) {}
-
 	~Miraculous() {}
 
 	State _state;
-	int N, M;
+	int N, M, T;
 };

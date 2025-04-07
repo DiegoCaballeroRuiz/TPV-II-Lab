@@ -2,10 +2,10 @@
 
 #pragma once
 #include "../ecs/System.h"
+#include <SDL.h>
 
 class Texture;
 struct Transform;
-class SDL_Rect;
 
 class RenderSystem: public ecs::System {
 public:
@@ -22,6 +22,6 @@ private:
 	void draw(Transform *tr, Texture *tex);
 	void drawSrc(Transform* tr, Texture* tex, SDL_Rect src);
 
-	SDL_Rect _cherrySrcRect, _pearSrcRect, _ghostSrcRect;
+	
 };
 

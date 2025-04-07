@@ -124,5 +124,4 @@ struct numeric_type<max,
 						&& (std::numeric_limits<uint16_t>::max() < max)> > {
 	using type = uint32_t;
 };
-
 }

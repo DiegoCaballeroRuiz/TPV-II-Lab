@@ -31,7 +31,7 @@ void PacManSystem::initSystem() {
 
 	_manager->addComponent<Image>(pacman, &sdlutils().images().at("pacman"));
 	_manager->addComponent<Health>(pacman);
-	_manager->addComponent<Inmunity>(pacman);
+	_inmunity = _manager->addComponent<Inmunity>(pacman);
 }
 
 void PacManSystem::update() {
@@ -71,11 +71,22 @@ void PacManSystem::update() {
 		_pacManTransform->_pos.setY(sdlutils().height() - _pacManTransform->_height);
 		_pacManTransform->_vel.set(0.0f, 0.0f);
 	}
+
+	//Try to remove inmunity
+	if (_inmunity->_inmune && sdlutils().virtualTimer().currTime() - _inmuneTime > 10000) {
+		Message m;
+		m.id = msgId::_m_IMMUNITY_END;
+		_manager->send(m);
+	}
 }
 
 void 
 PacManSystem::recieve(const Message& msg) {
-	if (msg.id == msgId::_m_ROUND_START) {
+	if (msg.id == msgId::_m_NEW_GAME) {
+		_pacManHealth->lives = _pacManHealth->maxLives;
+	}
+
+	else if (msg.id == msgId::_m_ROUND_START) {
 		float scale = 50.0f;
 		float x = (sdlutils().width() - scale) / 2.0f;
 		float y = (sdlutils().height() - scale) / 2.0f;
@@ -85,8 +96,16 @@ PacManSystem::recieve(const Message& msg) {
 		_pacManTransform->_rot = 0.0f;
 	}
 
-	else if (msg.id == msgId::_m_NEW_GAME) {
-		_pacManHealth->lives = _pacManHealth->maxLives;
+	else if (msg.id == msgId::_m_ROUND_OVER) {
+		auto health = _manager->getComponent<Health>(_manager->getHandler(ecs::hdlr::PACMAN));
+
+		health->lives--;
+
+		if (health->lives <= 0) {
+			Message m;
+			m.id = msgId::_m_GAME_OVER;
+			_manager->send(m);
+		}
 	}
 
 	else if (msg.id == msgId::_m_PACMAN_FOOD_COLLISION) {
@@ -105,7 +124,7 @@ PacManSystem::recieve(const Message& msg) {
 		auto pacman = _manager->getHandler(ecs::hdlr::PACMAN);
 		auto ghost = msg.ghost_hit.e;
 
-		if (_manager->getComponent<Inmunity>(pacman)->_inmune) _manager->setAlive(ghost, false);
+		if (_inmunity->_inmune) _manager->setAlive(ghost, false);
 		else {
 			Message m;
 			m.id = msgId::_m_ROUND_OVER;
@@ -113,18 +132,12 @@ PacManSystem::recieve(const Message& msg) {
 		}
 	}
 
-	else if (msg.id == msgId::_m_ROUND_OVER) {
-		auto health = _manager->getComponent<Health>(_manager->getHandler(ecs::hdlr::PACMAN));
-
-		health->lives--;
-
-		if (health->lives <= 0) {
-			Message m;
-			m.id = msgId::_m_GAME_OVER;
-			_manager->send(m);
-		}
+	else if (msg.id == msgId::_m_IMMUNITY_START) {
+		_inmunity->_inmune = true;
+		_inmuneTime = sdlutils().virtualTimer().currTime();
 	}
 
-	else if (msg.id == msgId::_m_IMMUNITY_START) {
+	else if (msg.id == msgId::_m_IMMUNITY_END) {
+		_inmunity->_inmune = false;
 	}
 }

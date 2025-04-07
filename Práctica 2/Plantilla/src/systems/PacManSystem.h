@@ -6,6 +6,7 @@
 
 struct Transform;
 struct Health;
+struct Inmunity;
 class PacManSystem: public ecs::System {
 public:
 
@@ -18,5 +19,7 @@ private:
 	Transform *_pacManTransform;
 	Health* _pacManHealth;
 
+	float _inmuneTime;
+	Inmunity* _inmunity;
 };
 

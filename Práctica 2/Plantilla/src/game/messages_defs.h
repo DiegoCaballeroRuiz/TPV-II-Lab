@@ -51,6 +51,10 @@ struct Message {
 
 		struct {
 
+		} inmunity_end;
+
+		struct {
+
 		} round_over;
 
 		struct {
