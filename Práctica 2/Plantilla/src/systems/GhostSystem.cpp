@@ -3,17 +3,18 @@
 #include "../ecs/Manager.h"
 #include "../components/Transform.h"
 #include "../components/TextureSrc.h"
+#include "../components/Image.h"
 
 GhostSystem::GhostSystem() : _spawnDelay(5000.0f), _ghostGroup(ecs::grp::GHOSTS), _ghostSpeed(1.1f), _canSpawn(true),
 _spawnPoints({
-	Vector2D(0, 0),
-	Vector2D(sdlutils().width(), 0),
-	Vector2D(0, sdlutils().height()),
-	Vector2D(sdlutils().width(), sdlutils().height())
+	Vector2D(12.5, 12.5),
+	Vector2D(sdlutils().width() - 12.5, 12.5),
+	Vector2D(12.5, sdlutils().height() - 12.5),
+	Vector2D(sdlutils().width() - 12.5, sdlutils().height() - 12.5)
 	})
 {
-	_defaultSrcRect = build_sdlrect(128 * 5, 128 * 5, 128, 128);
-	_blueSrcRect = build_sdlrect(128 * 6, 128 * 3, 128, 128);
+	_defaultSrcRect = build_sdlrect(0, 128*4, 128, 128);
+	_blueSrcRect = build_sdlrect(6 * 128, 3 * 128, 128, 128);
 }
 
 GhostSystem::~GhostSystem() {}
@@ -30,12 +31,14 @@ GhostSystem::update() {
 	auto pacManTransform = _manager->getComponent<Transform>(_manager->getHandler(ecs::hdlr::PACMAN));
 	//Intentar spawnear fantasma
 	if (_canSpawn && ghosts.size() < 10 && sdlutils().virtualTimer().currTime() >= _lastGhostSpawnTime + _spawnDelay) {
-		ecs::entity_t ghost = new ecs::Entity(_ghostGroup);
+		ecs::entity_t ghost = _manager->addEntity(_ghostGroup);
 
 		float scale = 25.0f;
-		Vector2D pos = _spawnPoints[sdlutils().rand().nextInt(0, 5)];
-		Vector2D velocity = (pos - pacManTransform->_pos);
+		Vector2D pos = _spawnPoints[sdlutils().rand().nextInt(0, 4)];
+		Vector2D velocity = Vector2D(pacManTransform->_pos - pos).normalize();
 		_manager->addComponent<Transform>(ghost, pos, velocity, scale, scale, 0);
+		_manager->addComponent<Image>(ghost, &sdlutils().images().at("spritesheet"));
+		_manager->addComponent<TextureSrc>(ghost, _defaultSrcRect);
 
 		_lastGhostSpawnTime = sdlutils().virtualTimer().currTime();
 	}
@@ -45,7 +48,7 @@ GhostSystem::update() {
 
 		//Intentar cambiar direccion
 		int chance = sdlutils().rand().nextInt(0, 1001);
-		if (chance <= 5) transform->_vel = (transform->_pos - pacManTransform->_pos);
+		if (chance <= 5) transform->_vel = Vector2D(pacManTransform->_pos - transform->_pos).normalize();
 		
 		//Comprobar bordes
 		if (transform->_pos.getX() < 0 && transform->_vel.getX() < 0
@@ -72,10 +75,9 @@ GhostSystem::recieve(const Message& msg) {
 		_lastGhostSpawnTime = sdlutils().virtualTimer().currTime();
 	}
 
-	else if (msg.id == msgId::_m_ROUND_OVER) {
+ 	else if (msg.id == msgId::_m_ROUND_OVER) {
 		auto ghosts = _manager->getEntities(_ghostGroup);
-		for (auto ghost : ghosts) delete ghost;
-		ghosts.clear();
+		for (auto ghost : ghosts) _manager->setAlive(ghost, false);
 	}
 
 	else if (msg.id == msgId::_m_IMMUNITY_START) {

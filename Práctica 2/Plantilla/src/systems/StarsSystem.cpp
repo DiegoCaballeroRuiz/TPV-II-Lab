@@ -24,8 +24,6 @@ void StarsSystem::initSystem() {
 void StarsSystem::update() {
 
 	auto currTime = sdlutils().currRealTime();
-	auto stars = _manager->getEntities(ecs::grp::FRUITS);
-	auto n = stars.size();
 
 	for (auto i = 0u; i < n; i++) {
 		auto tr = _manager->getComponent<Transform>(stars[i]);

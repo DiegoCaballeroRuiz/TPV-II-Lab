@@ -42,7 +42,7 @@ class PacManSystem;
 class GameCtrlSystem;
 class CollisionsSystem;
 class GhostSystem;
-class StarsSystem;
+class StateChangeSystem;
 
 #define _SYS_LIST_ \
     FruitSystem, \
@@ -51,5 +51,5 @@ class StarsSystem;
 	GameCtrlSystem, \
 	CollisionsSystem, \
 	GhostSystem, \
-	StarsSystem
+	StateChangeSystem
 

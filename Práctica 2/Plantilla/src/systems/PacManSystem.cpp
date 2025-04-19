@@ -30,7 +30,7 @@ void PacManSystem::initSystem() {
 	_pacManTransform->init(Vector2D(x, y), Vector2D(), scale, scale, 0.0f);
 
 	_manager->addComponent<Image>(pacman, &sdlutils().images().at("pacman"));
-	_manager->addComponent<Health>(pacman);
+	_pacManHealth = _manager->addComponent<Health>(pacman);
 	_inmunity = _manager->addComponent<Inmunity>(pacman);
 }
 
@@ -100,12 +100,6 @@ PacManSystem::recieve(const Message& msg) {
 		auto health = _manager->getComponent<Health>(_manager->getHandler(ecs::hdlr::PACMAN));
 
 		health->lives--;
-
-		if (health->lives <= 0) {
-			Message m;
-			m.id = msgId::_m_GAME_OVER;
-			_manager->send(m);
-		}
 	}
 
 	else if (msg.id == msgId::_m_PACMAN_FOOD_COLLISION) {

@@ -6,9 +6,7 @@
 class Texture;
 
 struct Image: public ecs::Component {
-
-	Image() :
-			_tex() {
+	Image() : _tex() {
 	}
 
 	Image(Texture *tex) :

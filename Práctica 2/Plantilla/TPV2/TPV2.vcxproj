@@ -21,6 +21,11 @@
   <ItemGroup>
     <ClCompile Include="..\src\ecs\Manager.cpp" />
     <ClCompile Include="..\src\game\Game.cpp" />
+    <ClCompile Include="..\src\game\GameOverState.cpp" />
+    <ClCompile Include="..\src\game\NewGameState.cpp" />
+    <ClCompile Include="..\src\game\NewRoundState.cpp" />
+    <ClCompile Include="..\src\game\PausedState.cpp" />
+    <ClCompile Include="..\src\game\RunningState.cpp" />
     <ClCompile Include="..\SRC\json\JSON.cpp" />
     <ClCompile Include="..\SRC\json\JSONValue.cpp" />
     <ClCompile Include="..\SRC\json\json_demo.cpp" />
@@ -37,7 +42,7 @@
     <ClCompile Include="..\src\systems\GhostSystem.cpp" />
     <ClCompile Include="..\src\systems\PacManSystem.cpp" />
     <ClCompile Include="..\src\systems\RenderSystem.cpp" />
-    <ClCompile Include="..\src\systems\StarsSystem.cpp" />
+    <ClCompile Include="..\src\systems\StateChangeSystem.cpp" />
     <ClCompile Include="..\SRC\utils\Collisions.cpp" />
     <ClCompile Include="..\SRC\utils\Vector2D.cpp" />
   </ItemGroup>
@@ -155,7 +160,13 @@
     <ClInclude Include="..\src\ecs\System.h" />
     <ClInclude Include="..\src\game\ecs_defs.h" />
     <ClInclude Include="..\src\game\Game.h" />
+    <ClInclude Include="..\src\game\GameOverState.h" />
+    <ClInclude Include="..\src\game\GameState.h" />
     <ClInclude Include="..\src\game\messages_defs.h" />
+    <ClInclude Include="..\src\game\NewGameState.h" />
+    <ClInclude Include="..\src\game\NewRoundState.h" />
+    <ClInclude Include="..\src\game\PausedState.h" />
+    <ClInclude Include="..\src\game\RunningState.h" />
     <ClInclude Include="..\SRC\json\JSON.h" />
     <ClInclude Include="..\SRC\json\JSONValue.h" />
     <ClInclude Include="..\SRC\json\json_demo.h" />
@@ -177,7 +188,7 @@
     <ClInclude Include="..\src\systems\GhostSystem.h" />
     <ClInclude Include="..\src\systems\PacManSystem.h" />
     <ClInclude Include="..\src\systems\RenderSystem.h" />
-    <ClInclude Include="..\src\systems\StarsSystem.h" />
+    <ClInclude Include="..\src\systems\StateChangeSystem.h" />
     <ClInclude Include="..\SRC\utils\Collisions.h" />
     <ClInclude Include="..\SRC\utils\DynamicBitSet.h" />
     <ClInclude Include="..\SRC\utils\GenID.h" />

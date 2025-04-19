@@ -12,8 +12,8 @@ FruitSystem::FruitSystem()
 	: System(), _grid(), _fruitGroup(ecs::grp::FRUITS)
 {
 	initGrid();
-	_cherrySrcRect = build_sdlrect(128 * 5, 128 * 2, 128, 128);
-	_pearSrcRect = build_sdlrect(128 * 8, 128 * 2, 128, 128);
+	_cherrySrcRect = build_sdlrect(128 * 4, 128, 128, 128);
+	_pearSrcRect = build_sdlrect(128 * 7, 128, 128, 128);
 }
 
 FruitSystem::~FruitSystem() {
@@ -30,7 +30,7 @@ FruitSystem::initGrid() {
 
 void
 FruitSystem::initSystem() {
-	
+
 }
 
 void 
@@ -41,13 +41,14 @@ FruitSystem::createFruits() {
 
 	//Crear las frutas
 	for (int i = 0; i < nFruits; ++i) {
-		ecs::entity_t fruit = new ecs::Entity(_fruitGroup);
+		ecs::entity_t fruit = _manager->addEntity(_fruitGroup);
 
 		//Transform
 		auto transform = _manager->addComponent<Transform>(fruit);
 		float scale = 25.0f;
-		float x = _grid[i].getX() - scale;
-		float y = _grid[i].getY() - scale;
+
+		float x = _grid[i].getX() + scale/2;
+		float y = _grid[i].getY() + scale/2;
 
 		transform->init(Vector2D(x, y), Vector2D(), scale, scale, 0.0f);
 
@@ -66,6 +67,14 @@ FruitSystem::createFruits() {
 void 
 FruitSystem::update() {
 	auto fruits = _manager->getEntities(_fruitGroup);
+
+	std::cout << fruits.size() << "\n";
+
+	if (fruits.size() == 0) {
+		Message m; 
+		m.id = msgId::_m_ROUND_OVER;
+		_manager->send(m);
+	}
 
 	for (auto fruit : fruits) {
 		if (_manager->hasComponent<Miraculous>(fruit)) {
@@ -97,6 +106,11 @@ FruitSystem::update() {
 void 
 FruitSystem::recieve(const Message& msg) {
 	if (msg.id == msgId::_m_NEW_GAME) {
+		auto fruits = _manager->getEntities(_fruitGroup);
+
+		for (auto fruit : fruits)
+			_manager->setAlive(fruit, false);
+
 		createFruits();
 	}
 
@@ -108,14 +122,5 @@ FruitSystem::recieve(const Message& msg) {
 				miraculous->T = sdlutils().virtualTimer().currTime();
 			}
 		}
-	}
-
-	else if (msg.id == msgId::_m_GAME_OVER) {
-		auto fruits = _manager->getEntities(_fruitGroup);
-
-		for (auto fruit : fruits)
-			delete fruit;
-
-		fruits.clear();
 	}
 }

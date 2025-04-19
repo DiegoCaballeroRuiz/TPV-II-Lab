@@ -9,7 +9,7 @@ class FruitSystem : public ecs::System {
 	ecs::grpId_t _fruitGroup;
 	std::vector<Vector2D> _grid;
 	
-	const int N_ROWS = 6, N_COLUMNS = 8;
+	const int N_ROWS = 8, N_COLUMNS = 6;
 
 	void initGrid();
 	void createFruits();

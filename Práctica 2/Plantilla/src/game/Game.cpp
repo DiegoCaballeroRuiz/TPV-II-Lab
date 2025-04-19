@@ -11,19 +11,27 @@
 #include "../systems/RenderSystem.h"
 #include "../systems/StarsSystem.h"
 #include "../systems/FruitSystem.h"
+#include "../systems/GhostSystem.h"
+#include "../systems/StateChangeSystem.h"
 #include "../utils/Vector2D.h"
 #include "../utils/Collisions.h"
+#include "NewGameState.h"
+#include "NewRoundState.h"
+#include "PausedState.h"
+#include "RunningState.h"
+#include "GameOverState.h"
+#include "GameState.h"
 
 using ecs::Manager;
 
 Game::Game() :
-		_mngr(), //
-		_pacmanSys(), //
-		_gameCtrlSys(), //
-		_fruitSys(), //
-		_renderSys(), //
-		_collisionSys() {
-
+	_mngr(), //
+	_pacmanSys(), //
+	_fruitSys(), //
+	_renderSys(), //
+	_collisionSys()
+{
+	
 }
 
 Game::~Game() {
@@ -42,7 +50,7 @@ void Game::init() {
 
 	// initialize the SDL singleton
 	if (!SDLUtils::Init("PacMan, Stars, ...", 800, 600,
-			"../resources/config/resources.json")) {
+			"resources/config/resources.json")) {
 
 		std::cerr << "Something went wrong while initializing SDLUtils"
 				<< std::endl;
@@ -54,7 +62,6 @@ void Game::init() {
 		std::cerr << "Something went wrong while initializing SDLHandler"
 				<< std::endl;
 		return;
-
 	}
 
 	// Create the manager
@@ -62,11 +69,29 @@ void Game::init() {
 
 	// add the systems
 	_pacmanSys = _mngr->addSystem<PacManSystem>();
-	_startsSys = _mngr->addSystem<StarsSystem>();
-	_gameCtrlSys = _mngr->addSystem<GameCtrlSystem>();
 	_renderSys = _mngr->addSystem<RenderSystem>();
 	_collisionSys = _mngr->addSystem<CollisionsSystem>();
 	_fruitSys = _mngr->addSystem<FruitSystem>();
+	_ghostSys = _mngr->addSystem<GhostSystem>();
+	_stateSys = _mngr->addSystem<StateChangeSystem>(this);
+
+	_pacmanSys->initSystem();
+	_ghostSys->initSystem();
+	_fruitSys->initSystem();
+	_collisionSys->initSystem();
+	_renderSys->initSystem();
+	_stateSys->initSystem();
+
+	//add the states
+	_newgame_state = new NewGameState(this);
+	_newround_state = new NewRoundState(this);
+	_paused_state = new PausedState(this);
+	_gameover_state = new GameOverState(this);
+	_runing_state = new RunningState(this);
+
+	Message m;
+	m.id = msgId::_m_NEW_GAME;
+	_mngr->send(m);
 }
 
 void Game::start() {
@@ -89,9 +114,7 @@ void Game::start() {
 			continue;
 		}
 
-		_pacmanSys->update();
-		_gameCtrlSys->update();
-		_collisionSys->update();
+		_state->update();
 
 		_mngr->refresh();
 
