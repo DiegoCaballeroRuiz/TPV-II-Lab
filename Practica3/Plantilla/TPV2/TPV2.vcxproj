@@ -114,10 +114,8 @@
     <ClInclude Include="..\lib\SDL2_mixer-2.8.0\include\SDL_mixer.h" />
     <ClInclude Include="..\lib\SDL2_net-2.2.0\include\SDL_net.h" />
     <ClInclude Include="..\lib\SDL2_ttf-2.24.0\include\SDL_ttf.h" />
-    <ClInclude Include="..\src\game\Bullets.h" />
-    <ClInclude Include="..\src\game\BulletsManager.h" />
-    <ClInclude Include="..\src\game\Fighter.h" />
     <ClInclude Include="..\src\game\Game.h" />
+    <ClInclude Include="..\src\game\LittleWolf.h" />
     <ClInclude Include="..\src\game\Networking.h" />
     <ClInclude Include="..\src\game\netwrok_messages.h" />
     <ClInclude Include="..\src\game\UDPServer.h" />
@@ -145,9 +143,8 @@
     <ClInclude Include="..\src\utils\Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\game\Bullets.cpp" />
-    <ClCompile Include="..\src\game\Fighter.cpp" />
     <ClCompile Include="..\src\game\Game.cpp" />
+    <ClCompile Include="..\src\game\LittleWolf.cpp" />
     <ClCompile Include="..\src\game\Networking.cpp" />
     <ClCompile Include="..\src\game\UDPServer.cpp" />
     <ClCompile Include="..\src\json\JSON.cpp" />

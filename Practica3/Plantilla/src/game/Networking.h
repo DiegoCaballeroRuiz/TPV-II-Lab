@@ -6,10 +6,12 @@
 
 #include "netwrok_messages.h"
 class Vector2D;
+class LittleWolf;
+class Game;
 
 class Networking {
 public:
-	Networking();
+	Networking(Game* game);
 	virtual ~Networking();
 
 	bool init(char *host, Uint16 port);
@@ -24,16 +26,16 @@ public:
 		return _clientId == _masterId;
 	}
 
-	void send_state(const Vector2D &pos, float w, float h, float rot);
-	void send_my_info(const Vector2D &pos, float w, float h, float rot,
-			Uint8 state);
+	void send_my_info(float ax, float ay, float bx, float by, float whereX, float whereY, float velocityX, 
+					  float velocityY, float speed, float acceleration, float theta, LittleWolf::PlayerState state);
 	
-	void send_shoot(Vector2D p, Vector2D v, int width, int height, float r);
+	void send_shoot(Uint8 id, LittleWolf::Line fov);
+
 	void send_dead(Uint8 id);
+
 	void send_restart();
 
 private:
-
 	void handle_new_client(Uint8 id);
 	void handle_disconnet(Uint8 id);
 	void handle_player_state(const PlayerStateMsg &m);
@@ -41,6 +43,8 @@ private:
 	void handle_shoot(const ShootMsg &m);
 	void handle_dead(const MsgWithId &m);
 	void handle_restart();
+
+	Game* _game;
 
 	UDPsocket _sock;
 	SDLNet_SocketSet _socketSet;
