@@ -33,6 +33,8 @@ public:
 
 	void send_dead(Uint8 id);
 
+	void send_player_state(Uint8 id, LittleWolf::PlayerState state);
+
 	void send_restart();
 
 private:

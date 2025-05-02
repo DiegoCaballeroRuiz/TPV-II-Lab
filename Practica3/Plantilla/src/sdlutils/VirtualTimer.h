@@ -20,7 +20,7 @@ public:
 	virtual ~VirtualTimer() {
 	}
 
-	// Reset the time to start counting from this instance.
+	// Reset the time to start counting from this Instance.
 	inline void resetTime() {
 		_zeroTime = SDL_GetTicks();
 		_currTime = 0;

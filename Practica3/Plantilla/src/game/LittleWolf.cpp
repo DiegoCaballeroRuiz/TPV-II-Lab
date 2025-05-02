@@ -246,8 +246,7 @@ bool LittleWolf::addPlayer(std::uint8_t id) {
 	_players[id] = p;
 
 	_curr_player_id = id;
-
-
+	_game->getNetworking()->send_my_info(p.fov.a.x, p.fov.a.y, p.fov.b.x, p.fov.b.y, p.where.x, p.where.y, p.velocity.x, p.velocity.y, p.speed, p.acceleration, p.theta, p.state);
 
 	return true;
 }
@@ -640,3 +639,8 @@ void LittleWolf::updatePlayer(std::uint8_t id, const Player& player) {
 
 	_map.walling[(int)_players[id].where.y][(int)_players[id].where.x] = player_to_tile(id);
 }
+
+void LittleWolf::updateState(std::uint8_t id, PlayerState state) {
+	_players[id].state = state;
+}
+

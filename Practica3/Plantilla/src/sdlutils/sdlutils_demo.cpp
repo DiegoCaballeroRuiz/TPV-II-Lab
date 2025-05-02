@@ -33,7 +33,7 @@ void sdlutils_basic_demo() {
 	// else!
 	//
 	// you can also use the inline method sdlutils() that simply returns the value
-	// of *SDLUtils::instance() --- it is defined at the end of SDLUtils.h
+	// of *SDLUtils::Instance() --- it is defined at the end of SDLUtils.h
 	//
 	auto &sdl = *SDLUtils::Instance();
 

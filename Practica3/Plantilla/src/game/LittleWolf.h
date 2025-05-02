@@ -18,7 +18,6 @@
 class Game;
 class LittleWolf {
 public:
-
 	// a point in a 2D-plane
 	struct Point {
 		float x;
@@ -140,6 +139,8 @@ public:
 	bool killPlayer(std::uint8_t id);
 
 	void updatePlayer(std::uint8_t id, const Player& player);
+
+	void updateState(std::uint8_t id, PlayerState state);
 
 	void restart();
 

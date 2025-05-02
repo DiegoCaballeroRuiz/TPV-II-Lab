@@ -50,7 +50,7 @@ extern "C" {
 
 /**
  * \file
- * Note: The fuzzer implementation uses a static instance of random context
+ * Note: The fuzzer implementation uses a static Instance of random context
  * internally which makes it thread-UNsafe.
  */
 

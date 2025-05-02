@@ -366,6 +366,9 @@
     <ClInclude Include="..\src\json\JSONValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\game\netwrok_messages.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\game\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -373,9 +376,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\game\Networking.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\game\netwrok_messages.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\game\UDPServer.h">

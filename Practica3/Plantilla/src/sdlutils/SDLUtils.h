@@ -243,7 +243,7 @@ private:
 };
 
 // This macro defines a compact way for using the singleton SDLUtils, instead of
-// writing SDLUtils::instance()->method() we write sdlutils().method()
+// writing SDLUtils::Instance()->method() we write sdlutils().method()
 //
 inline SDLUtils& sdlutils() {
 	return *SDLUtils::Instance();

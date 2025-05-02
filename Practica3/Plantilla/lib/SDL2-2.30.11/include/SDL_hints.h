@@ -1588,7 +1588,7 @@ extern "C" {
  *  render API's output. As such, SDL will disable batching if a specific
  *  render backend is requested (since this might indicate that the app is
  *  planning to use the underlying graphics API directly). This hint can
- *  be used to explicitly request batching in this instance. It is a contract
+ *  be used to explicitly request batching in this Instance. It is a contract
  *  that you will either never use the underlying graphics API directly, or
  *  if you do, you will call SDL_RenderFlush() before you do so any current
  *  batch goes to the GPU before your work begins. Not following this contract

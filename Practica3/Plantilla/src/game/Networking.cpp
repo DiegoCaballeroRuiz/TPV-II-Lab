@@ -22,7 +22,7 @@ Networking::Networking(Game* game) :
 Networking::~Networking() {
 }
 
-bool Networking::init(char *host, Uint16 port) {
+bool Networking::init(char* host, Uint16 port) {
 
 	if (SDLNet_ResolveHost(&_srvadd, host, port) < 0) {
 		SDLNetUtils::print_SDLNet_error();
@@ -61,8 +61,8 @@ bool Networking::init(char *host, Uint16 port) {
 					m1.deserialize(_p->data);
 					_clientId = m1._client_id;
 					_masterId = m1._master_id;
-					std::cout << ">> " << (int) _masterId << std::endl;
-					std::cout << ">> " << (int) _clientId << std::endl;
+					std::cout << ">> " << (int)_masterId << std::endl;
+					std::cout << ">> " << (int)_clientId << std::endl;
 					connected = true;
 					break;
 				case _CONNECTION_REJECTED:
@@ -78,7 +78,7 @@ bool Networking::init(char *host, Uint16 port) {
 	}
 
 #ifdef _DEBUG
-	std::cout << "Connected with id " << (int) _clientId << std::endl;
+	std::cout << "Connected with id " << (int)_clientId << std::endl;
 #endif
 
 	return true;
@@ -153,18 +153,12 @@ void Networking::handle_new_client(Uint8 id) {
 void Networking::handle_disconnet(Uint8 id) {
 
 	_game->getLittleWolf()->removePlayer(id);
-	if (id == _clientId) {
+	if (id == _masterId) {
 		Uint8 newId = _game->getLittleWolf()->getFirstExistingPlayer();
-		_clientId  = newId;
+		_masterId  = newId;
 	}
 }
 
-void Networking::handle_player_state(const PlayerStateMsg &m) {
-
-	if (m._client_id != _clientId) {
-		
-	}
-}
 
 void Networking::send_shoot(Uint8 id, LittleWolf::Line fov) {
 	ShootMsg m;
@@ -199,6 +193,8 @@ void Networking::send_my_info(float ax, float ay, float bx, float by, float wher
 	SDLNetUtils::serializedSend(m, _p, _sock, _srvadd);
 }
 
+
+
 void Networking::handle_player_info(const PlayerInfoMsg &m) {
 	if (m._client_id != _clientId) {
 		LittleWolf::Player player;
@@ -224,4 +220,19 @@ void Networking::send_restart() {
 
 void Networking::handle_restart() {
 	_game->getLittleWolf()->restart();
+}
+
+void Networking::send_player_state(Uint8 id, LittleWolf::PlayerState state) {
+	PlayerStateMsg m;
+	m._client_id = id;
+	m._type = _PLAYER_STATE;
+
+	m.state = state;
+	SDLNetUtils::serializedSend(m, _p, _sock, _srvadd);
+}
+
+void Networking::handle_player_state(const PlayerStateMsg &m) {
+	if (m._client_id != _clientId) {
+		_game->getLittleWolf()->updateState(m._client_id, m.state);
+	}
 }

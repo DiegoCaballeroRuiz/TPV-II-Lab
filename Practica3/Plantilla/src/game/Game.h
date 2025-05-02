@@ -12,6 +12,7 @@ public:
 	Game();
 	virtual ~Game();
 	void init(const char *map, char* host, uint8_t port);
+	void initGame();
 	void start();
 
 	Networking* getNetworking() { return _networking; }

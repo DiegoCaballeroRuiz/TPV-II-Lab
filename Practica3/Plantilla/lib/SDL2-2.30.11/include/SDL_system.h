@@ -268,7 +268,7 @@ extern DECLSPEC void SDLCALL SDL_iPhoneSetEventPump(SDL_bool enabled);
 extern DECLSPEC void * SDLCALL SDL_AndroidGetJNIEnv(void);
 
 /**
- * Retrieve the Java instance of the Android activity class.
+ * Retrieve the Java Instance of the Android activity class.
  *
  * The prototype of the function in SDL's code actually declares a void*
  * return type, even if the implementation returns a jobject. The rationale
@@ -280,7 +280,7 @@ extern DECLSPEC void * SDLCALL SDL_AndroidGetJNIEnv(void);
  *
  * https://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/functions.html
  *
- * \returns the jobject representing the instance of the Activity class of the
+ * \returns the jobject representing the Instance of the Activity class of the
  *          Android application, or NULL on error.
  *
  * \since This function is available since SDL 2.0.0.

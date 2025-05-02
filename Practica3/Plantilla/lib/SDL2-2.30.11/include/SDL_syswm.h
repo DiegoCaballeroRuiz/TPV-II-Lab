@@ -234,7 +234,7 @@ struct SDL_SysWMinfo
         {
             HWND window;                /**< The window handle */
             HDC hdc;                    /**< The window device context */
-            HINSTANCE hinstance;        /**< The instance handle */
+            HInstance hInstance;        /**< The Instance handle */
         } win;
 #endif
 #if defined(SDL_VIDEO_DRIVER_WINRT)

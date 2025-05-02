@@ -185,10 +185,10 @@ extern DECLSPEC SDL_SensorType SDLCALL SDL_SensorGetDeviceType(int device_index)
 extern DECLSPEC int SDLCALL SDL_SensorGetDeviceNonPortableType(int device_index);
 
 /**
- * Get the instance ID of a sensor.
+ * Get the Instance ID of a sensor.
  *
- * \param device_index The sensor to get instance id from
- * \returns the sensor instance ID, or -1 if `device_index` is out of range.
+ * \param device_index The sensor to get Instance id from
+ * \returns the sensor Instance ID, or -1 if `device_index` is out of range.
  *
  * \since This function is available since SDL 2.0.9.
  */
@@ -205,14 +205,14 @@ extern DECLSPEC SDL_SensorID SDLCALL SDL_SensorGetDeviceInstanceID(int device_in
 extern DECLSPEC SDL_Sensor *SDLCALL SDL_SensorOpen(int device_index);
 
 /**
- * Return the SDL_Sensor associated with an instance id.
+ * Return the SDL_Sensor associated with an Instance id.
  *
- * \param instance_id The sensor from instance id
+ * \param Instance_id The sensor from Instance id
  * \returns an SDL_Sensor object.
  *
  * \since This function is available since SDL 2.0.9.
  */
-extern DECLSPEC SDL_Sensor *SDLCALL SDL_SensorFromInstanceID(SDL_SensorID instance_id);
+extern DECLSPEC SDL_Sensor *SDLCALL SDL_SensorFromInstanceID(SDL_SensorID Instance_id);
 
 /**
  * Get the implementation dependent name of a sensor
@@ -246,10 +246,10 @@ extern DECLSPEC SDL_SensorType SDLCALL SDL_SensorGetType(SDL_Sensor *sensor);
 extern DECLSPEC int SDLCALL SDL_SensorGetNonPortableType(SDL_Sensor *sensor);
 
 /**
- * Get the instance ID of a sensor.
+ * Get the Instance ID of a sensor.
  *
  * \param sensor The SDL_Sensor object to inspect
- * \returns the sensor instance ID, or -1 if `sensor` is NULL.
+ * \returns the sensor Instance ID, or -1 if `sensor` is NULL.
  *
  * \since This function is available since SDL 2.0.9.
  */

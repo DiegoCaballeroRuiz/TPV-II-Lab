@@ -121,7 +121,7 @@ typedef enum
  * [RGBA]mask parameters.
  *
  * The [RGBA]mask parameters are the bitmasks used to extract that color from
- * a pixel. For instance, `Rmask` being 0xFF000000 means the red data is
+ * a pixel. For Instance, `Rmask` being 0xFF000000 means the red data is
  * stored in the most significant byte. Using zeros for the RGB masks sets a
  * default value, based on the depth. For example:
  *

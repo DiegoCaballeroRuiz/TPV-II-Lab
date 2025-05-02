@@ -15,7 +15,8 @@ void server(Uint16 port) {
 void client(char* host, Uint16 port) {
 	Game* g = new Game();
 
-	g->init("resources/maps/little_wolf/map_0.txt", host, port);
+	g->init("resources/maps/little_wolf/map_0.json", host, port);
+	g->initGame();
 	g->start();
 }
 

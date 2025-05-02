@@ -8,7 +8,8 @@
 #include "Networking.h"
 
 Game::Game() :
-		_little_wolf() //
+		_little_wolf(new LittleWolf(this)),
+		_networking(new Networking(this))//
 {
 }
 
@@ -25,8 +26,11 @@ Game::~Game() {
 	delete _little_wolf;
 }
 
+void Game::initGame() {
+	_little_wolf->addPlayer(_networking->client_id());
+}
+
 void Game::init(const char *map, char* host, uint8_t port) {
-	_little_wolf = new LittleWolf(this);
 
 	// load a map
 	_little_wolf->load(map);
@@ -49,14 +53,13 @@ void Game::init(const char *map, char* host, uint8_t port) {
 		return;
 	}
 
-	_little_wolf->init(sdlutils().window(), sdlutils().renderer());
-	_networking->init(host, port);
+	if (!_networking->init(host, port)) {
+		SDLNetUtils::print_SDLNet_error();
+		return;
+	}
 
-	//// add some players
-	_little_wolf->addPlayer(0);
-	_little_wolf->addPlayer(1);
-	_little_wolf->addPlayer(2);
-	_little_wolf->addPlayer(3);
+
+	_little_wolf->init(sdlutils().window(), sdlutils().renderer());
 }
 
 void Game::start() {

@@ -348,7 +348,7 @@ extern DECLSPEC char *SDLCALL SDL_GameControllerMappingForDeviceIndex(int joysti
  *
  * The index passed as an argument refers to the N'th game controller on the
  * system. This index is not the value which will identify this controller in
- * future controller events. The joystick's instance id (SDL_JoystickID) will
+ * future controller events. The joystick's Instance id (SDL_JoystickID) will
  * be used there instead.
  *
  * \param joystick_index the device_index of a device, up to
@@ -365,9 +365,9 @@ extern DECLSPEC char *SDLCALL SDL_GameControllerMappingForDeviceIndex(int joysti
 extern DECLSPEC SDL_GameController *SDLCALL SDL_GameControllerOpen(int joystick_index);
 
 /**
- * Get the SDL_GameController associated with an instance id.
+ * Get the SDL_GameController associated with an Instance id.
  *
- * \param joyid the instance id to get the SDL_GameController for
+ * \param joyid the Instance id to get the SDL_GameController for
  * \returns an SDL_GameController on success or NULL on failure; call
  *          SDL_GetError() for more information.
  *
@@ -379,10 +379,10 @@ extern DECLSPEC SDL_GameController *SDLCALL SDL_GameControllerFromInstanceID(SDL
  * Get the SDL_GameController associated with a player index.
  *
  * Please note that the player index is _not_ the device index, nor is it the
- * instance id!
+ * Instance id!
  *
  * \param player_index the player index, which is not the device index or the
- *                     instance id!
+ *                     Instance id!
  * \returns the SDL_GameController associated with a player index.
  *
  * \since This function is available since SDL 2.0.12.

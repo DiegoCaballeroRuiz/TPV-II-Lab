@@ -1107,7 +1107,7 @@ extern DECLSPEC int SDLCALL SDL_HapticUpdateEffect(SDL_Haptic * haptic,
  *
  * To repeat the effect over and over indefinitely, set `iterations` to
  * `SDL_HAPTIC_INFINITY`. (Repeats the envelope - attack and fade.) To make
- * one instance of the effect last indefinitely (so the effect does not fade),
+ * one Instance of the effect last indefinitely (so the effect does not fade),
  * set the effect's `length` in its structure/union to `SDL_HAPTIC_INFINITY`
  * instead.
  *

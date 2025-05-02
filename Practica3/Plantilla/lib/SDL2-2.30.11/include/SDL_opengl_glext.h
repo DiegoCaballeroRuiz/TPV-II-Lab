@@ -1649,8 +1649,8 @@ GLAPI GLboolean APIENTRY glIsVertexArray (GLuint array);
 #define GL_UNIFORM_BLOCK_REFERENCED_BY_GEOMETRY_SHADER 0x8A45
 #define GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER 0x8A46
 #define GL_INVALID_INDEX                  0xFFFFFFFFu
-typedef void (APIENTRYP PFNGLDRAWARRAYSINSTANCEDPROC) (GLenum mode, GLint first, GLsizei count, GLsizei instancecount);
-typedef void (APIENTRYP PFNGLDRAWELEMENTSINSTANCEDPROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei instancecount);
+typedef void (APIENTRYP PFNGLDRAWARRAYSInstanceDPROC) (GLenum mode, GLint first, GLsizei count, GLsizei Instancecount);
+typedef void (APIENTRYP PFNGLDRAWELEMENTSInstanceDPROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei Instancecount);
 typedef void (APIENTRYP PFNGLTEXBUFFERPROC) (GLenum target, GLenum internalformat, GLuint buffer);
 typedef void (APIENTRYP PFNGLPRIMITIVERESTARTINDEXPROC) (GLuint index);
 typedef void (APIENTRYP PFNGLCOPYBUFFERSUBDATAPROC) (GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
@@ -1662,8 +1662,8 @@ typedef void (APIENTRYP PFNGLGETACTIVEUNIFORMBLOCKIVPROC) (GLuint program, GLuin
 typedef void (APIENTRYP PFNGLGETACTIVEUNIFORMBLOCKNAMEPROC) (GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei *length, GLchar *uniformBlockName);
 typedef void (APIENTRYP PFNGLUNIFORMBLOCKBINDINGPROC) (GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding);
 #ifdef GL_GLEXT_PROTOTYPES
-GLAPI void APIENTRY glDrawArraysInstanced (GLenum mode, GLint first, GLsizei count, GLsizei instancecount);
-GLAPI void APIENTRY glDrawElementsInstanced (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei instancecount);
+GLAPI void APIENTRY glDrawArraysInstanced (GLenum mode, GLint first, GLsizei count, GLsizei Instancecount);
+GLAPI void APIENTRY glDrawElementsInstanced (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei Instancecount);
 GLAPI void APIENTRY glTexBuffer (GLenum target, GLenum internalformat, GLuint buffer);
 GLAPI void APIENTRY glPrimitiveRestartIndex (GLuint index);
 GLAPI void APIENTRY glCopyBufferSubData (GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
@@ -1748,7 +1748,7 @@ typedef khronos_int64_t GLint64;
 #define GL_MAX_INTEGER_SAMPLES            0x9110
 typedef void (APIENTRYP PFNGLDRAWELEMENTSBASEVERTEXPROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLint basevertex);
 typedef void (APIENTRYP PFNGLDRAWRANGEELEMENTSBASEVERTEXPROC) (GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void *indices, GLint basevertex);
-typedef void (APIENTRYP PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXPROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei instancecount, GLint basevertex);
+typedef void (APIENTRYP PFNGLDRAWELEMENTSInstanceDBASEVERTEXPROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei Instancecount, GLint basevertex);
 typedef void (APIENTRYP PFNGLMULTIDRAWELEMENTSBASEVERTEXPROC) (GLenum mode, const GLsizei *count, GLenum type, const void *const*indices, GLsizei drawcount, const GLint *basevertex);
 typedef void (APIENTRYP PFNGLPROVOKINGVERTEXPROC) (GLenum mode);
 typedef GLsync (APIENTRYP PFNGLFENCESYNCPROC) (GLenum condition, GLbitfield flags);
@@ -1768,7 +1768,7 @@ typedef void (APIENTRYP PFNGLSAMPLEMASKIPROC) (GLuint maskNumber, GLbitfield mas
 #ifdef GL_GLEXT_PROTOTYPES
 GLAPI void APIENTRY glDrawElementsBaseVertex (GLenum mode, GLsizei count, GLenum type, const void *indices, GLint basevertex);
 GLAPI void APIENTRY glDrawRangeElementsBaseVertex (GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void *indices, GLint basevertex);
-GLAPI void APIENTRY glDrawElementsInstancedBaseVertex (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei instancecount, GLint basevertex);
+GLAPI void APIENTRY glDrawElementsInstancedBaseVertex (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei Instancecount, GLint basevertex);
 GLAPI void APIENTRY glMultiDrawElementsBaseVertex (GLenum mode, const GLsizei *count, GLenum type, const void *const*indices, GLsizei drawcount, const GLint *basevertex);
 GLAPI void APIENTRY glProvokingVertex (GLenum mode);
 GLAPI GLsync APIENTRY glFenceSync (GLenum condition, GLbitfield flags);
@@ -2432,9 +2432,9 @@ GLAPI void APIENTRY glGetDoublei_v (GLenum target, GLuint index, GLdouble *data)
 #define GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT 0x8E8E
 #define GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT 0x8E8F
 #define GL_TEXTURE_IMMUTABLE_FORMAT       0x912F
-typedef void (APIENTRYP PFNGLDRAWARRAYSINSTANCEDBASEINSTANCEPROC) (GLenum mode, GLint first, GLsizei count, GLsizei instancecount, GLuint baseinstance);
-typedef void (APIENTRYP PFNGLDRAWELEMENTSINSTANCEDBASEINSTANCEPROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei instancecount, GLuint baseinstance);
-typedef void (APIENTRYP PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXBASEINSTANCEPROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei instancecount, GLint basevertex, GLuint baseinstance);
+typedef void (APIENTRYP PFNGLDRAWARRAYSInstanceDBASEInstancePROC) (GLenum mode, GLint first, GLsizei count, GLsizei Instancecount, GLuint baseInstance);
+typedef void (APIENTRYP PFNGLDRAWELEMENTSInstanceDBASEInstancePROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei Instancecount, GLuint baseInstance);
+typedef void (APIENTRYP PFNGLDRAWELEMENTSInstanceDBASEVERTEXBASEInstancePROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei Instancecount, GLint basevertex, GLuint baseInstance);
 typedef void (APIENTRYP PFNGLGETINTERNALFORMATIVPROC) (GLenum target, GLenum internalformat, GLenum pname, GLsizei count, GLint *params);
 typedef void (APIENTRYP PFNGLGETACTIVEATOMICCOUNTERBUFFERIVPROC) (GLuint program, GLuint bufferIndex, GLenum pname, GLint *params);
 typedef void (APIENTRYP PFNGLBINDIMAGETEXTUREPROC) (GLuint unit, GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format);
@@ -2442,12 +2442,12 @@ typedef void (APIENTRYP PFNGLMEMORYBARRIERPROC) (GLbitfield barriers);
 typedef void (APIENTRYP PFNGLTEXSTORAGE1DPROC) (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width);
 typedef void (APIENTRYP PFNGLTEXSTORAGE2DPROC) (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height);
 typedef void (APIENTRYP PFNGLTEXSTORAGE3DPROC) (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth);
-typedef void (APIENTRYP PFNGLDRAWTRANSFORMFEEDBACKINSTANCEDPROC) (GLenum mode, GLuint id, GLsizei instancecount);
-typedef void (APIENTRYP PFNGLDRAWTRANSFORMFEEDBACKSTREAMINSTANCEDPROC) (GLenum mode, GLuint id, GLuint stream, GLsizei instancecount);
+typedef void (APIENTRYP PFNGLDRAWTRANSFORMFEEDBACKInstanceDPROC) (GLenum mode, GLuint id, GLsizei Instancecount);
+typedef void (APIENTRYP PFNGLDRAWTRANSFORMFEEDBACKSTREAMInstanceDPROC) (GLenum mode, GLuint id, GLuint stream, GLsizei Instancecount);
 #ifdef GL_GLEXT_PROTOTYPES
-GLAPI void APIENTRY glDrawArraysInstancedBaseInstance (GLenum mode, GLint first, GLsizei count, GLsizei instancecount, GLuint baseinstance);
-GLAPI void APIENTRY glDrawElementsInstancedBaseInstance (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei instancecount, GLuint baseinstance);
-GLAPI void APIENTRY glDrawElementsInstancedBaseVertexBaseInstance (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei instancecount, GLint basevertex, GLuint baseinstance);
+GLAPI void APIENTRY glDrawArraysInstancedBaseInstance (GLenum mode, GLint first, GLsizei count, GLsizei Instancecount, GLuint baseInstance);
+GLAPI void APIENTRY glDrawElementsInstancedBaseInstance (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei Instancecount, GLuint baseInstance);
+GLAPI void APIENTRY glDrawElementsInstancedBaseVertexBaseInstance (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei Instancecount, GLint basevertex, GLuint baseInstance);
 GLAPI void APIENTRY glGetInternalformativ (GLenum target, GLenum internalformat, GLenum pname, GLsizei count, GLint *params);
 GLAPI void APIENTRY glGetActiveAtomicCounterBufferiv (GLuint program, GLuint bufferIndex, GLenum pname, GLint *params);
 GLAPI void APIENTRY glBindImageTexture (GLuint unit, GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format);
@@ -2455,8 +2455,8 @@ GLAPI void APIENTRY glMemoryBarrier (GLbitfield barriers);
 GLAPI void APIENTRY glTexStorage1D (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width);
 GLAPI void APIENTRY glTexStorage2D (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height);
 GLAPI void APIENTRY glTexStorage3D (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth);
-GLAPI void APIENTRY glDrawTransformFeedbackInstanced (GLenum mode, GLuint id, GLsizei instancecount);
-GLAPI void APIENTRY glDrawTransformFeedbackStreamInstanced (GLenum mode, GLuint id, GLuint stream, GLsizei instancecount);
+GLAPI void APIENTRY glDrawTransformFeedbackInstanced (GLenum mode, GLuint id, GLsizei Instancecount);
+GLAPI void APIENTRY glDrawTransformFeedbackStreamInstanced (GLenum mode, GLuint id, GLuint stream, GLsizei Instancecount);
 #endif
 #endif /* GL_VERSION_4_2 */
 
@@ -3202,9 +3202,9 @@ GLAPI void APIENTRY glPrimitiveBoundingBoxARB (GLfloat minX, GLfloat minY, GLflo
 #define GL_ARB_arrays_of_arrays 1
 #endif /* GL_ARB_arrays_of_arrays */
 
-#ifndef GL_ARB_base_instance
-#define GL_ARB_base_instance 1
-#endif /* GL_ARB_base_instance */
+#ifndef GL_ARB_base_Instance
+#define GL_ARB_base_Instance 1
+#endif /* GL_ARB_base_Instance */
 
 #ifndef GL_ARB_bindless_texture
 #define GL_ARB_bindless_texture 1
@@ -3444,15 +3444,15 @@ GLAPI void APIENTRY glBlendFuncSeparateiARB (GLuint buf, GLenum srcRGB, GLenum d
 #define GL_ARB_draw_indirect 1
 #endif /* GL_ARB_draw_indirect */
 
-#ifndef GL_ARB_draw_instanced
-#define GL_ARB_draw_instanced 1
-typedef void (APIENTRYP PFNGLDRAWARRAYSINSTANCEDARBPROC) (GLenum mode, GLint first, GLsizei count, GLsizei primcount);
-typedef void (APIENTRYP PFNGLDRAWELEMENTSINSTANCEDARBPROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount);
+#ifndef GL_ARB_draw_Instanced
+#define GL_ARB_draw_Instanced 1
+typedef void (APIENTRYP PFNGLDRAWARRAYSInstanceDARBPROC) (GLenum mode, GLint first, GLsizei count, GLsizei primcount);
+typedef void (APIENTRYP PFNGLDRAWELEMENTSInstanceDARBPROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount);
 #ifdef GL_GLEXT_PROTOTYPES
 GLAPI void APIENTRY glDrawArraysInstancedARB (GLenum mode, GLint first, GLsizei count, GLsizei primcount);
 GLAPI void APIENTRY glDrawElementsInstancedARB (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount);
 #endif
-#endif /* GL_ARB_draw_instanced */
+#endif /* GL_ARB_draw_Instanced */
 
 #ifndef GL_ARB_enhanced_layouts
 #define GL_ARB_enhanced_layouts 1
@@ -3910,14 +3910,14 @@ GLAPI void APIENTRY glMultiDrawElementsIndirectCountARB (GLenum mode, GLenum typ
 #endif
 #endif /* GL_ARB_indirect_parameters */
 
-#ifndef GL_ARB_instanced_arrays
-#define GL_ARB_instanced_arrays 1
+#ifndef GL_ARB_Instanced_arrays
+#define GL_ARB_Instanced_arrays 1
 #define GL_VERTEX_ATTRIB_ARRAY_DIVISOR_ARB 0x88FE
 typedef void (APIENTRYP PFNGLVERTEXATTRIBDIVISORARBPROC) (GLuint index, GLuint divisor);
 #ifdef GL_GLEXT_PROTOTYPES
 GLAPI void APIENTRY glVertexAttribDivisorARB (GLuint index, GLuint divisor);
 #endif
-#endif /* GL_ARB_instanced_arrays */
+#endif /* GL_ARB_Instanced_arrays */
 
 #ifndef GL_ARB_internalformat_query
 #define GL_ARB_internalformat_query 1
@@ -4874,9 +4874,9 @@ GLAPI void APIENTRY glGetCompressedTexImageARB (GLenum target, GLint level, void
 #define GL_ARB_transform_feedback3 1
 #endif /* GL_ARB_transform_feedback3 */
 
-#ifndef GL_ARB_transform_feedback_instanced
-#define GL_ARB_transform_feedback_instanced 1
-#endif /* GL_ARB_transform_feedback_instanced */
+#ifndef GL_ARB_transform_feedback_Instanced
+#define GL_ARB_transform_feedback_Instanced 1
+#endif /* GL_ARB_transform_feedback_Instanced */
 
 #ifndef GL_ARB_transform_feedback_overflow_query
 #define GL_ARB_transform_feedback_overflow_query 1
@@ -7618,15 +7618,15 @@ GLAPI void APIENTRY glColorMaskIndexedEXT (GLuint index, GLboolean r, GLboolean 
 #endif
 #endif /* GL_EXT_draw_buffers2 */
 
-#ifndef GL_EXT_draw_instanced
-#define GL_EXT_draw_instanced 1
-typedef void (APIENTRYP PFNGLDRAWARRAYSINSTANCEDEXTPROC) (GLenum mode, GLint start, GLsizei count, GLsizei primcount);
-typedef void (APIENTRYP PFNGLDRAWELEMENTSINSTANCEDEXTPROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount);
+#ifndef GL_EXT_draw_Instanced
+#define GL_EXT_draw_Instanced 1
+typedef void (APIENTRYP PFNGLDRAWARRAYSInstanceDEXTPROC) (GLenum mode, GLint start, GLsizei count, GLsizei primcount);
+typedef void (APIENTRYP PFNGLDRAWELEMENTSInstanceDEXTPROC) (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount);
 #ifdef GL_GLEXT_PROTOTYPES
 GLAPI void APIENTRY glDrawArraysInstancedEXT (GLenum mode, GLint start, GLsizei count, GLsizei primcount);
 GLAPI void APIENTRY glDrawElementsInstancedEXT (GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount);
 #endif
-#endif /* GL_EXT_draw_instanced */
+#endif /* GL_EXT_draw_Instanced */
 
 #ifndef GL_EXT_draw_range_elements
 #define GL_EXT_draw_range_elements 1
@@ -10002,8 +10002,8 @@ GLAPI void APIENTRY glViewportPositionWScaleNV (GLuint index, GLfloat xcoeff, GL
 #define GL_DRAW_ARRAYS_COMMAND_NV         0x0003
 #define GL_DRAW_ELEMENTS_STRIP_COMMAND_NV 0x0004
 #define GL_DRAW_ARRAYS_STRIP_COMMAND_NV   0x0005
-#define GL_DRAW_ELEMENTS_INSTANCED_COMMAND_NV 0x0006
-#define GL_DRAW_ARRAYS_INSTANCED_COMMAND_NV 0x0007
+#define GL_DRAW_ELEMENTS_InstanceD_COMMAND_NV 0x0006
+#define GL_DRAW_ARRAYS_InstanceD_COMMAND_NV 0x0007
 #define GL_ELEMENT_ADDRESS_COMMAND_NV     0x0008
 #define GL_ATTRIBUTE_ADDRESS_COMMAND_NV   0x0009
 #define GL_UNIFORM_ADDRESS_COMMAND_NV     0x000A
@@ -11001,13 +11001,13 @@ typedef void (APIENTRYP PFNGLPATHSTENCILFUNCNVPROC) (GLenum func, GLint ref, GLu
 typedef void (APIENTRYP PFNGLPATHSTENCILDEPTHOFFSETNVPROC) (GLfloat factor, GLfloat units);
 typedef void (APIENTRYP PFNGLSTENCILFILLPATHNVPROC) (GLuint path, GLenum fillMode, GLuint mask);
 typedef void (APIENTRYP PFNGLSTENCILSTROKEPATHNVPROC) (GLuint path, GLint reference, GLuint mask);
-typedef void (APIENTRYP PFNGLSTENCILFILLPATHINSTANCEDNVPROC) (GLsizei numPaths, GLenum pathNameType, const void *paths, GLuint pathBase, GLenum fillMode, GLuint mask, GLenum transformType, const GLfloat *transformValues);
-typedef void (APIENTRYP PFNGLSTENCILSTROKEPATHINSTANCEDNVPROC) (GLsizei numPaths, GLenum pathNameType, const void *paths, GLuint pathBase, GLint reference, GLuint mask, GLenum transformType, const GLfloat *transformValues);
+typedef void (APIENTRYP PFNGLSTENCILFILLPATHInstanceDNVPROC) (GLsizei numPaths, GLenum pathNameType, const void *paths, GLuint pathBase, GLenum fillMode, GLuint mask, GLenum transformType, const GLfloat *transformValues);
+typedef void (APIENTRYP PFNGLSTENCILSTROKEPATHInstanceDNVPROC) (GLsizei numPaths, GLenum pathNameType, const void *paths, GLuint pathBase, GLint reference, GLuint mask, GLenum transformType, const GLfloat *transformValues);
 typedef void (APIENTRYP PFNGLPATHCOVERDEPTHFUNCNVPROC) (GLenum func);
 typedef void (APIENTRYP PFNGLCOVERFILLPATHNVPROC) (GLuint path, GLenum coverMode);
 typedef void (APIENTRYP PFNGLCOVERSTROKEPATHNVPROC) (GLuint path, GLenum coverMode);
-typedef void (APIENTRYP PFNGLCOVERFILLPATHINSTANCEDNVPROC) (GLsizei numPaths, GLenum pathNameType, const void *paths, GLuint pathBase, GLenum coverMode, GLenum transformType, const GLfloat *transformValues);
-typedef void (APIENTRYP PFNGLCOVERSTROKEPATHINSTANCEDNVPROC) (GLsizei numPaths, GLenum pathNameType, const void *paths, GLuint pathBase, GLenum coverMode, GLenum transformType, const GLfloat *transformValues);
+typedef void (APIENTRYP PFNGLCOVERFILLPATHInstanceDNVPROC) (GLsizei numPaths, GLenum pathNameType, const void *paths, GLuint pathBase, GLenum coverMode, GLenum transformType, const GLfloat *transformValues);
+typedef void (APIENTRYP PFNGLCOVERSTROKEPATHInstanceDNVPROC) (GLsizei numPaths, GLenum pathNameType, const void *paths, GLuint pathBase, GLenum coverMode, GLenum transformType, const GLfloat *transformValues);
 typedef void (APIENTRYP PFNGLGETPATHPARAMETERIVNVPROC) (GLuint path, GLenum pname, GLint *value);
 typedef void (APIENTRYP PFNGLGETPATHPARAMETERFVNVPROC) (GLuint path, GLenum pname, GLfloat *value);
 typedef void (APIENTRYP PFNGLGETPATHCOMMANDSNVPROC) (GLuint path, GLubyte *commands);
@@ -11028,8 +11028,8 @@ typedef void (APIENTRYP PFNGLMATRIXMULT3X3FNVPROC) (GLenum matrixMode, const GLf
 typedef void (APIENTRYP PFNGLMATRIXMULTTRANSPOSE3X3FNVPROC) (GLenum matrixMode, const GLfloat *m);
 typedef void (APIENTRYP PFNGLSTENCILTHENCOVERFILLPATHNVPROC) (GLuint path, GLenum fillMode, GLuint mask, GLenum coverMode);
 typedef void (APIENTRYP PFNGLSTENCILTHENCOVERSTROKEPATHNVPROC) (GLuint path, GLint reference, GLuint mask, GLenum coverMode);
-typedef void (APIENTRYP PFNGLSTENCILTHENCOVERFILLPATHINSTANCEDNVPROC) (GLsizei numPaths, GLenum pathNameType, const void *paths, GLuint pathBase, GLenum fillMode, GLuint mask, GLenum coverMode, GLenum transformType, const GLfloat *transformValues);
-typedef void (APIENTRYP PFNGLSTENCILTHENCOVERSTROKEPATHINSTANCEDNVPROC) (GLsizei numPaths, GLenum pathNameType, const void *paths, GLuint pathBase, GLint reference, GLuint mask, GLenum coverMode, GLenum transformType, const GLfloat *transformValues);
+typedef void (APIENTRYP PFNGLSTENCILTHENCOVERFILLPATHInstanceDNVPROC) (GLsizei numPaths, GLenum pathNameType, const void *paths, GLuint pathBase, GLenum fillMode, GLuint mask, GLenum coverMode, GLenum transformType, const GLfloat *transformValues);
+typedef void (APIENTRYP PFNGLSTENCILTHENCOVERSTROKEPATHInstanceDNVPROC) (GLsizei numPaths, GLenum pathNameType, const void *paths, GLuint pathBase, GLint reference, GLuint mask, GLenum coverMode, GLenum transformType, const GLfloat *transformValues);
 typedef GLenum (APIENTRYP PFNGLPATHGLYPHINDEXRANGENVPROC) (GLenum fontTarget, const void *fontName, GLbitfield fontStyle, GLuint pathParameterTemplate, GLfloat emScale, GLuint *baseAndCount);
 typedef GLenum (APIENTRYP PFNGLPATHGLYPHINDEXARRAYNVPROC) (GLuint firstPathName, GLenum fontTarget, const void *fontName, GLbitfield fontStyle, GLuint firstGlyphIndex, GLsizei numGlyphs, GLuint pathParameterTemplate, GLfloat emScale);
 typedef GLenum (APIENTRYP PFNGLPATHMEMORYGLYPHINDEXARRAYNVPROC) (GLuint firstPathName, GLenum fontTarget, GLsizeiptr fontSize, const void *fontData, GLsizei faceIndex, GLuint firstGlyphIndex, GLsizei numGlyphs, GLuint pathParameterTemplate, GLfloat emScale);

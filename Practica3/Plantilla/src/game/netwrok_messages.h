@@ -40,13 +40,9 @@ struct MsgWithMasterId: MsgWithId {
 
 struct PlayerStateMsg: MsgWithId {
 
-	float x;
-	float y;
-	int w;
-	int h;
-	float rot;
+	LittleWolf::PlayerState state;
 
-	_IMPL_SERIALIAZION_WITH_BASE_(MsgWithId, x,y,w,h,rot)
+	_IMPL_SERIALIAZION_WITH_BASE_(MsgWithId, int(state))
 
 };
 

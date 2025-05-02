@@ -63,34 +63,34 @@ public:
 	//
 	template<typename ...Targs>
 	inline static bool Init(Targs &&...args) {
-		assert(!_instance);
-		_instance = new T();
-		if (_instance->init(std::forward<Targs>(args)...)) {
+		assert(!_Instance);
+		_Instance = new T();
+		if (_Instance->init(std::forward<Targs>(args)...)) {
 			return true; // all OK
 		} else { // Something went wrong
-			delete _instance;
+			delete _Instance;
 			return false;
 		}
 	}
 
 	inline static T* Instance() {
-		assert(_instance != nullptr);
-		return _instance;
+		assert(_Instance != nullptr);
+		return _Instance;
 	}
 
 	inline static bool HasInstance() {
-		return _instance != nullptr;
+		return _Instance != nullptr;
 	}
 
 	inline static void Release() {
-		assert(_instance);
-		delete _instance;
-		_instance = nullptr;
+		assert(_Instance);
+		delete _Instance;
+		_Instance = nullptr;
 	}
 
 private:
-	static T *_instance;
+	static T *_Instance;
 };
 
-template<typename T> T *Singleton<T>::_instance;
+template<typename T> T *Singleton<T>::_Instance;
 

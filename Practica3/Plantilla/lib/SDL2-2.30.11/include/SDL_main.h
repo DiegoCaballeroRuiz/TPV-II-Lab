@@ -41,7 +41,7 @@
 
 #elif defined(__WINRT__)
 /* On WinRT, SDL provides a main function that initializes CoreApplication,
-   creating an instance of IFrameworkView in the process.
+   creating an Instance of IFrameworkView in the process.
 
    Please note that #include'ing SDL_main.h is not enough to get a main()
    function working.  In non-XAML apps, the file,
@@ -85,7 +85,7 @@
 
 #elif defined(__NACL__)
 /* On NACL we use ppapi_simple to set up the application helper code,
-   then wait for the first PSE_INSTANCE_DIDCHANGEVIEW event before 
+   then wait for the first PSE_Instance_DIDCHANGEVIEW event before 
    starting the user main function.
    All user code is run in a separate thread by ppapi_simple, thus 
    allowing for blocking io to take place via nacl_io
@@ -189,7 +189,7 @@ extern DECLSPEC void SDLCALL SDL_SetMainReady(void);
  * \param style the value to use in WNDCLASSEX::style. If `name` is NULL, SDL
  *              currently uses `(CS_BYTEALIGNCLIENT | CS_OWNDC)` regardless of
  *              what is specified here.
- * \param hInst the HINSTANCE to use in WNDCLASSEX::hInstance. If zero, SDL
+ * \param hInst the HInstance to use in WNDCLASSEX::hInstance. If zero, SDL
  *              will use `GetModuleHandle(NULL)` instead.
  * \returns 0 on success, -1 on error. SDL_GetError() may have details.
  *

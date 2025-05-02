@@ -134,10 +134,10 @@ extern DECLSPEC void *SDLCALL SDL_Vulkan_GetVkGetInstanceProcAddr(void);
 extern DECLSPEC void SDLCALL SDL_Vulkan_UnloadLibrary(void);
 
 /**
- * Get the names of the Vulkan instance extensions needed to create a surface
+ * Get the names of the Vulkan Instance extensions needed to create a surface
  * with SDL_Vulkan_CreateSurface.
  *
- * If `pNames` is NULL, then the number of required Vulkan instance extensions
+ * If `pNames` is NULL, then the number of required Vulkan Instance extensions
  * is returned in `pCount`. Otherwise, `pCount` must point to a variable set
  * to the number of elements in the `pNames` array, and on return the variable
  * is overwritten with the number of names actually written to `pNames`. If
@@ -149,12 +149,12 @@ extern DECLSPEC void SDLCALL SDL_Vulkan_UnloadLibrary(void);
  * The `window` parameter is currently needed to be valid as of SDL 2.0.8,
  * however, this parameter will likely be removed in future releases
  *
- * \param window A window for which the required Vulkan instance extensions
+ * \param window A window for which the required Vulkan Instance extensions
  *               should be retrieved (will be deprecated in a future release)
  * \param pCount A pointer to an unsigned int corresponding to the number of
  *               extensions to be returned
  * \param pNames NULL or a pointer to an array to be filled with required
- *               Vulkan instance extensions
+ *               Vulkan Instance extensions
  * \returns SDL_TRUE on success, SDL_FALSE on error.
  *
  * \since This function is available since SDL 2.0.6.
@@ -169,11 +169,11 @@ extern DECLSPEC SDL_bool SDLCALL SDL_Vulkan_GetInstanceExtensions(SDL_Window *wi
  * Create a Vulkan rendering surface for a window.
  *
  * The `window` must have been created with the `SDL_WINDOW_VULKAN` flag and
- * `instance` must have been created with extensions returned by
+ * `Instance` must have been created with extensions returned by
  * SDL_Vulkan_GetInstanceExtensions() enabled.
  *
  * \param window The window to which to attach the Vulkan surface
- * \param instance The Vulkan instance handle
+ * \param Instance The Vulkan Instance handle
  * \param surface A pointer to a VkSurfaceKHR handle to output the newly
  *                created surface
  * \returns SDL_TRUE on success, SDL_FALSE on error.
@@ -184,7 +184,7 @@ extern DECLSPEC SDL_bool SDLCALL SDL_Vulkan_GetInstanceExtensions(SDL_Window *wi
  * \sa SDL_Vulkan_GetDrawableSize
  */
 extern DECLSPEC SDL_bool SDLCALL SDL_Vulkan_CreateSurface(SDL_Window *window,
-                                                          VkInstance instance,
+                                                          VkInstance Instance,
                                                           VkSurfaceKHR* surface);
 
 /**

@@ -2011,7 +2011,7 @@ extern DECLSPEC int SDLCALL Mix_Volume(int channel, int volume);
  * In addition to channels having a volume setting, individual chunks also
  * maintain a separate volume. Both values are considered when mixing, so both
  * affect the final attenuation of the sound. This lets an app adjust the
- * volume for all instances of a sound in addition to specific instances of
+ * volume for all Instances of a sound in addition to specific Instances of
  * that sound.
  *
  * The volume must be between 0 (silence) and MIX_MAX_VOLUME (full volume).

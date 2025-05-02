@@ -715,8 +715,8 @@ extern DECLSPEC Uint32 SDLCALL SDL_GetWindowPixelFormat(SDL_Window * window);
  * - `SDL_WINDOW_FULLSCREEN`: fullscreen window
  * - `SDL_WINDOW_FULLSCREEN_DESKTOP`: fullscreen window at desktop resolution
  * - `SDL_WINDOW_OPENGL`: window usable with an OpenGL context
- * - `SDL_WINDOW_VULKAN`: window usable with a Vulkan instance
- * - `SDL_WINDOW_METAL`: window usable with a Metal instance
+ * - `SDL_WINDOW_VULKAN`: window usable with a Vulkan Instance
+ * - `SDL_WINDOW_METAL`: window usable with a Metal Instance
  * - `SDL_WINDOW_HIDDEN`: window is not visible
  * - `SDL_WINDOW_BORDERLESS`: no window decoration
  * - `SDL_WINDOW_RESIZABLE`: window can be resized
