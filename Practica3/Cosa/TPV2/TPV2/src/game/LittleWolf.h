@@ -14,6 +14,7 @@
 #include <fstream>
 
 #include "../sdlutils/InputHandler.h"
+#include "../sdlutils/SDLUtils.h"
 
 class Game;
 class LittleWolf {
@@ -125,6 +126,18 @@ public:
 		}
 	};
 
+
+	bool _restart;
+	double _restartInitTime;
+	double _restartCooldown;
+	int _timeLeft;
+
+	bool getRestart() { return _restart; }
+	void setRestart(bool value) { 
+		_restart = value; 
+		if(_restart) _restartInitTime = sdlutils().virtualTimer().currRealTime();
+	}
+
 	LittleWolf(Game* game);
 	virtual ~LittleWolf();
 
@@ -165,6 +178,7 @@ public:
 
 	// Quiero declararle mi amor pero solo se declarar variables
 	bool shoot(Uint8 pid);
+	void resolveShoot(Uint8 pid);
 
 private:
 
@@ -407,9 +421,6 @@ private:
 
 	// array of players
 	Player _players[_max_player];
-
-	// id of the current player, used since we allows switching between players
-	uint8_t _curr_player_id;
 
 	// the GPU structure with all the needed elements to draw the world
 	Gpu _gpu;

@@ -65,6 +65,8 @@ bool Game::init(const char *map, char *host, Uint16 port) {
 
 	_littleWolf->init(sdlutils().window(), sdlutils().renderer());
 
+	sdlutils().virtualTimer().resetTime();
+
 	return true;
 }
 

@@ -10,7 +10,6 @@
 
 #include "../json/JSONValue.h"
 #include "../sdlutils/InputHandler.h"
-#include "../sdlutils/SDLUtils.h"
 #include "../sdlutils/Texture.h"
 
 #include "Networking.h"
@@ -26,8 +25,11 @@ LittleWolf::LittleWolf(Game* game) :
 		_walling_height(), //
 		_shoot_distace(), // the shoot distance -- not that it's wrt to the walling size
 		_map(), //
-		_players(), //
-		_curr_player_id(0) { // we start with player 0
+		_players(),
+		_restart(false),
+		_restartInitTime(0.),
+		_restartCooldown(5000),
+		_timeLeft(0){ 
 }
 
 LittleWolf::~LittleWolf() {
@@ -47,26 +49,36 @@ void LittleWolf::init(SDL_Window *window, SDL_Renderer *render) {
 
 void LittleWolf::update() {
 
-	auto &ihdlr = ih();
+	if (!_restart) {
+		auto& ihdlr = ih();
 
-	if (ihdlr.keyDownEvent()) {
-		// toggle help
-		if (ihdlr.isKeyDown(SDL_SCANCODE_T)) {
-			_show_help = !_show_help;
+		if (ihdlr.keyDownEvent()) {
+			// toggle help
+			if (ihdlr.isKeyDown(SDL_SCANCODE_T)) {
+				_show_help = !_show_help;
+			}
 		}
+
+		Player& p = _players[_game->getNetworking().client_id()];
+
+		// dead player don't move/spin/shoot
+		if (p.state != ALIVE)
+			return;
+
+		spin(p);  // handle spinning
+		move(p);  // handle moving
+		shoot(p.id);
+
+		_game->getNetworking().send_my_info(p.fov.a.x, p.fov.a.y, p.fov.b.x, p.fov.b.y, p.where.x, p.where.y,
+			p.velocity.x, p.velocity.y, p.speed, p.acceleration, p.theta, p.state);
 	}
-
-	Player &p = _players[_curr_player_id];
-
-	// dead player don't move/spin/shoot
-	if (p.state != ALIVE)
-		return;
-
-	spin(p);  // handle spinning
-	move(p);  // handle moving
-
-	_game->getNetworking().send_my_info(p.fov.a.x, p.fov.a.y, p.fov.b.x, p.fov.b.y, p.where.x, p.where.y, 
-										 p.velocity.x, p.velocity.y, p.speed, p.acceleration, p.theta, p.state);
+	else {
+		if (sdlutils().virtualTimer().currRealTime() > _restartInitTime + _restartCooldown) {
+			_restart = false;
+			if (_game->getNetworking().is_master()) restart();
+		}
+		_timeLeft = ((_restartInitTime + _restartCooldown) - sdlutils().virtualTimer().currRealTime()) / 1000;
+	}
 }
 
 void LittleWolf::load(std::string filename) {
@@ -245,7 +257,6 @@ bool LittleWolf::addPlayer(std::uint8_t id) {
 	_map.walling[(int) p.where.y][(int) p.where.x] = player_to_tile(id);
 	_players[id] = p;
 
-	_curr_player_id = id;
 	_game->getNetworking().send_my_info(p.fov.a.x, p.fov.a.y, p.fov.b.x, p.fov.b.y, p.where.x, p.where.y, p.velocity.x, p.velocity.y, p.speed, p.acceleration, p.theta, p.state);
 
 	return true;
@@ -290,10 +301,10 @@ std::uint8_t LittleWolf::getFirstExistingPlayer() {
 void LittleWolf::render() {
 
 	// if the player is dead we only render upper view, otherwise the normal view
-	if (_players[_curr_player_id].state == DEAD)
+	if (_players[_game->getNetworking().client_id()].state == DEAD)
 		render_upper_view();
 	else
-		render_map(_players[_curr_player_id]);
+		render_map(_players[_game->getNetworking().client_id()]);
 
 	// render the identifiers, state, etc
 	render_players_info();
@@ -429,7 +440,7 @@ void LittleWolf::render_upper_view() {
 
 	for (int x = 0; x < _gpu.xres; x++)
 		for (int y = 0; y < _gpu.yres; y++)
-			put(display, y, x, 0x00000000);
+			put(display, x, y, 0x00000000);
 
 	for (auto x = 0u; x < _map.walling_height; x++)
 		for (auto y = 0u; y < _map.walling_width; y++) {
@@ -485,7 +496,7 @@ void LittleWolf::render_players_info() {
 		// render player info if it is used
 		if (s != NOT_USED) {
 
-			std::string msg = (i == _curr_player_id ? "*P" : " P")
+			std::string msg = (i == _game->getNetworking().client_id() ? "*P" : " P")
 					+ std::to_string(i) + (s == DEAD ? " (dead)" : "");
 
 			Texture info(sdlutils().renderer(), msg,
@@ -498,6 +509,17 @@ void LittleWolf::render_players_info() {
 			y += info.height() + 5;
 
 		}
+	}
+	if (_restart) {
+		std::string msg = ("The game will restart in " + std::to_string(_timeLeft) + " seconds");
+
+		Texture info(sdlutils().renderer(), msg,
+			sdlutils().fonts().at("MFR24"),
+			build_sdlcolor(color_rgba(40 + 10)));
+
+		SDL_Rect dest = build_sdlrect(0, y, info.width(), info.height());
+
+		info.render(dest);
 	}
 }
 
@@ -537,7 +559,7 @@ void LittleWolf::move(Player &p) {
 
 	// if player hits a wall or a different player, we take the player back
 	// to previous position and put velocity to 0
-	if (tile(p.where, _map.walling) != 10 + _curr_player_id
+	if (tile(p.where, _map.walling) != 10 + _game->getNetworking().client_id()
 			&& tile(p.where, _map.walling) != 0) {
 		p.velocity = zero;
 		p.where = last;
@@ -575,38 +597,41 @@ bool LittleWolf::shoot(Uint8 pid) {
 
 	// Space shoot -- we use keyDownEvent to force a complete press/release for each bullet
 	if (ihdlr.keyDownEvent() && ihdlr.isKeyDown(SDL_SCANCODE_SPACE)) {
+		_game->getNetworking().send_shoot(_game->getNetworking().client_id());
 
-		// play gun shot sound
-		sdlutils().soundEffects().at("gunshot").play();
-
-		// we shoot in several directions, because with projection what you see is not exact
-		for (float d = -0.05; d <= 0.05; d += 0.005) {
-			Player p = _players[pid];
-
-			// search which tile was hit
-			const Line camera = rotate(p.fov, p.theta + d);
-			Point direction = lerp(camera, 0.5f);
-			direction.x = direction.x / mag(direction);
-			direction.y = direction.y / mag(direction);
-			const Hit hit = cast(p.where, direction, _map.walling, false, true);
-
-#ifdef _DEBUG
-			printf(
-					"Shoot by player %d hit a tile with value %d! at distance %f\n",
-					p.id, hit.tile, mag(sub(p.where, hit.where)));
-#endif
-
-			// if we hit a tile with a player id and the distance from that tile is smaller
-			// than shoot_distace, we mark the player as dead
-			if (hit.tile > 9 && mag(sub(p.where, hit.where)) < _shoot_distace) {
-				uint8_t id = tile_to_player(hit.tile);
-				_players[id].state = DEAD;
-				sdlutils().soundEffects().at("pain").play();
-				return true;
-			}
-		}
+		return true;
 	}
 	return false;
+}
+
+void LittleWolf::resolveShoot(Uint8 pid) {
+
+	// we shoot in several directions, because with projection what you see is not exact
+	for (float d = -0.05; d <= 0.05; d += 0.005) {
+		Player p = _players[pid];
+
+		// search which tile was hit
+		const Line camera = rotate(p.fov, p.theta + d);
+		Point direction = lerp(camera, 0.5f);
+		direction.x = direction.x / mag(direction);
+		direction.y = direction.y / mag(direction);
+		const Hit hit = cast(p.where, direction, _map.walling, false, true);
+
+#ifdef _DEBUG
+		printf(
+			"Shoot by player %d hit a tile with value %d! at distance %f\n",
+			p.id, hit.tile, mag(sub(p.where, hit.where)));
+#endif
+
+		// if we hit a tile with a player id and the distance from that tile is smaller
+		// than shoot_distace, we mark the player as dead
+		if (hit.tile > 9 && mag(sub(p.where, hit.where)) < _shoot_distace) {
+			uint8_t id = tile_to_player(hit.tile);
+			killPlayer(id);
+			_game->getNetworking().send_dead(id);
+			return;
+		}
+	}
 }
 
 void LittleWolf::bringAllToLife() {
@@ -620,9 +645,49 @@ void LittleWolf::bringAllToLife() {
 
 void LittleWolf::restart() {
 	bringAllToLife();
-	for (auto i = 0u; i < _max_player; i++) {
-		auto [row, col] = searchForRandomFreeCell();
-		_players[i].where = { col + 0.5f, row + 0.5f };
+
+	for (int id = 0; id < _max_player;id++) {
+		//set in a new random pos
+		if (_players[id].state != NOT_USED) {
+			_map.walling[(int)_players[id].where.y][(int)_players[id].where.x] = 0;
+
+			auto& rand = sdlutils().rand();
+
+			// The search for an empty cell start at a random position (orow,ocol)
+			uint16_t orow = rand.nextInt(0, _map.walling_height);
+			uint16_t ocol = rand.nextInt(0, _map.walling_width);
+
+			// search for an empty cell
+			uint16_t row = orow;
+			uint16_t col = (ocol + 1) % _map.walling_width;
+			while (!((orow == row) && (ocol == col)) && _map.walling[row][col] != 0) {
+				col = (col + 1) % _map.walling_width;
+				if (col == 0)
+					row = (row + 1) % _map.walling_height;
+			}
+
+			// handle the case where the search is failed, which in principle should never
+			// happen unless we start with map with few empty cells
+			if (row >= _map.walling_height)
+				return;
+
+			// initialize the player
+			Player p = { //
+					id, //
+							viewport(0.8f), // focal
+							{ col + 0.5f, row + 0.5f }, // Where.
+							{ 0.0f, 0.0f }, 			// Velocity.
+							2.0f, 			// Speed.
+							0.9f, 			// Acceleration.
+							0.0f, 			// Rotation angle in radians.
+							ALIVE 			// Player state
+			};
+
+			// not that player <id> is stored in the map as player_to_tile(id) -- which is id+10
+			_map.walling[(int)p.where.y][(int)p.where.x] = player_to_tile(id);
+			Game::Instance()->getNetworking().send_state(id, p.fov.a.x, p.fov.a.y, p.fov.b.x, p.fov.b.y, p.where.x, p.where.y,
+				p.velocity.x, p.velocity.y, p.speed, p.acceleration, p.theta, p.state);
+		}
 	}
 }
 
@@ -631,6 +696,16 @@ bool LittleWolf::killPlayer(std::uint8_t id) {
 	
 	_players[id].state = DEAD;
 	sdlutils().soundEffects().at("pain").play();
+
+	int i = 0;
+	for (auto player : _players) {
+		if (player.state == ALIVE) ++i;
+	}
+
+	if (i == 1 && _game->getNetworking().is_master()) {
+		_game->getNetworking().send_restart();
+	}
+
 	return true;
 }
 

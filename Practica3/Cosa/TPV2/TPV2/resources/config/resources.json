@@ -31,6 +31,10 @@
             "file": "resources/sound/gunshot.wav"
         },
         {
+            "id": "pain",
+            "file": "resources/sound/pain.wav"
+        },
+        {
             "id": "explosion",
             "file": "resources/sound/explosion.wav"
         },

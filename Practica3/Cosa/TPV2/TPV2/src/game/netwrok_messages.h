@@ -39,9 +39,15 @@ struct MsgWithMasterId: MsgWithId {
 
 struct PlayerStateMsg: MsgWithId {
 
+	float ax, ay, bx, by;			// To create fov
+	float whereX, whereY;			// To create where(wrt. to the grid)
+	float velocityX, velocityY;	    // To create velocity
+	float speed;					// maximum speed
+	float acceleration;				// acceleration
+	float theta;					// rotation (in rad)
 	int state;
 
-	_IMPL_SERIALIAZION_WITH_BASE_(MsgWithId, state)
+	_IMPL_SERIALIAZION_WITH_BASE_(MsgWithId, ax, ay, bx, by, whereX, whereY, velocityX, velocityY, speed, acceleration, theta, state)
 
 };
 
@@ -59,6 +65,11 @@ struct PlayerInfoMsg: MsgWithId {
 
 };
 struct ShootMsg: MsgWithId {
+
+	_IMPL_SERIALIAZION_WITH_BASE_(MsgWithId)
+
+};
+struct RestartMsg : MsgWithId {
 
 	_IMPL_SERIALIAZION_WITH_BASE_(MsgWithId)
 

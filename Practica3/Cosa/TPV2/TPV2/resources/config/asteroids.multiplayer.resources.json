@@ -19,12 +19,25 @@
 	{ "id" : "usage_5", "text" : "  N: Pass control to next player", "font" : "MFR12", "color" : "0xffffffff" },
     { "id" : "usage_6", "text" : "  R: Restart", "font" : "MFR12", "color" : "0xffffffff" }
   ],
-  
-  "sounds" : [
-    { "id" : "gunshot", "file" : "resources/sound/gunshot.wav" },
-    { "id" : "explosion", "file" : "resources/sound/explosion.wav" },
-    { "id" : "thrust", "file" : "resources/sound/thrust.wav" }
-  ],
+
+	"sounds": [
+		{
+			"id": "gunshot",
+			"file": "resources/sound/gunshot.wav"
+		},
+		{
+			"id": "explosion",
+			"file": "resources/sound/explosion.wav"
+		},
+		{
+			"id": "thrust",
+			"file": "resources/sound/thrust.wav"
+		},
+		{
+			"id": "pain",
+			"file": "resources/sound/pain.wav"
+		}
+	],
 
   "musics" : [
   ]

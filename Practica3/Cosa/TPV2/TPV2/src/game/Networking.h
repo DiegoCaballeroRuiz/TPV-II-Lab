@@ -24,8 +24,9 @@ public:
 		return _clientId == _masterId;
 	}
 
-	void send_state(Uint8 id, int state);
-	void send_my_info(float ax, float ay, float bx, float by, float whereX, float whereY, float velocityX, float velocityY, 
+	void send_state(Uint8 id, float ax, float ay, float bx, float by, float whereX, float whereY, float velocityX, float velocityY,
+		float speed, float acceleration, float theta, int state);
+	void send_my_info(float ax, float ay, float bx, float by, float whereX, float whereY, float velocityX, float velocityY,
 		float speed, float acceleration, float theta, int state);
 	
 	void send_shoot(Uint8 id);
@@ -37,7 +38,7 @@ private:
 	void handle_new_client(Uint8 id);
 	void handle_disconnet(Uint8 id);
 	void handle_player_state(const PlayerStateMsg &m);
-	void handle_player_info(const PlayerInfoMsg &m);
+	void handle_player_info(const PlayerInfoMsg& m);
 	void handle_shoot(const ShootMsg &m);
 	void handle_dead(const MsgWithId &m);
 	void handle_restart();

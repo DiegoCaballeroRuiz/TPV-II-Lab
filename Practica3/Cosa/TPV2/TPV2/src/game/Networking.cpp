@@ -145,7 +145,7 @@ void Networking::update() {
 
 void Networking::handle_new_client(Uint8 id) {
 	if (id != _clientId)
-		Game::Instance()->getLittleWolf().addPlayer(id);
+		Game::Instance()->getLittleWolf().updateState(id, LittleWolf::ALIVE);
 }
 
 void Networking::handle_disconnet(Uint8 id) {
@@ -156,9 +156,22 @@ void Networking::handle_disconnet(Uint8 id) {
 	}
 }
 
-void Networking::send_state(Uint8 id, int state) {
+void Networking::send_state(Uint8 id, float ax, float ay, float bx, float by, float whereX, float whereY, float velocityX, float velocityY,
+	float speed, float acceleration, float theta, int state) {
 	PlayerStateMsg m;
 	m._client_id = id;
+	m.ax = ax;
+	m.ay = ay;
+	m.bx = bx;
+	m.by = by;
+	m.whereX = whereX;
+	m.whereY = whereY;
+	m.velocityX = velocityX;
+	m.velocityY = velocityY;
+	m.speed = speed;
+	m.acceleration = acceleration;
+	m.theta = theta;
+	m.state = state;
 	m._type = _PLAYER_STATE;
 
 	m.state = state;
@@ -166,10 +179,19 @@ void Networking::send_state(Uint8 id, int state) {
 }
 
 void Networking::handle_player_state(const PlayerStateMsg &m) {
+		
+	LittleWolf::Player player;
 
-	if (m._client_id != _clientId) {
-		Game::Instance()->getLittleWolf().updateState(m._client_id, (LittleWolf::PlayerState)m.state);
-	}
+	player.id = m._client_id;
+	player.where = { m.whereX, m.whereY };
+	player.speed = m.speed;
+	player.acceleration = m.acceleration;
+	player.fov = { {m.ax, m.ay}, {m.bx, m.by} };
+	player.state = (LittleWolf::PlayerState)m.state;
+	player.theta = m.theta;
+	player.velocity = { m.velocityX, m.velocityY };
+
+	Game::Instance()->getLittleWolf().updatePlayer(m._client_id, player);
 }
 
 void Networking::send_shoot(Uint8 id) {
@@ -182,9 +204,11 @@ void Networking::send_shoot(Uint8 id) {
 }
 
 void Networking::handle_shoot(const ShootMsg &m) {
-	if (m._client_id != _clientId) {
+	sdlutils().soundEffects().at("gunshot").play();
 
-		if (is_master()) Game::Instance()->getLittleWolf().shoot(m._client_id);
+	if (is_master()) {
+
+		Game::Instance()->getLittleWolf().resolveShoot(m._client_id);
 	}
 
 }
@@ -236,7 +260,6 @@ void Networking::handle_player_info(const PlayerInfoMsg &m) {
 		Game::Instance()->getLittleWolf().updatePlayer(m._client_id, player);
 	}
 }
-
 void Networking::send_restart() {
 	Msg m;
 	m._type = _RESTART;
@@ -244,6 +267,5 @@ void Networking::send_restart() {
 }
 
 void Networking::handle_restart() {
-	Game::Instance()->getLittleWolf().restart();
-
+	Game::Instance()->getLittleWolf().setRestart(true);
 }
