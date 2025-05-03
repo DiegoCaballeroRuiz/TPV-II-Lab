@@ -16,6 +16,7 @@ enum MsgType : Uint8 {
 	_PLAYER_INFO, // sent only the first time the player connects
 	_SHOOT, //
 	_DEAD, //
+	_DAMAGE,
 	_RESTART
 };
 
@@ -45,9 +46,11 @@ struct PlayerStateMsg: MsgWithId {
 	float speed;					// maximum speed
 	float acceleration;				// acceleration
 	float theta;					// rotation (in rad)
+	int hp;
 	int state;
+	int score;
 
-	_IMPL_SERIALIAZION_WITH_BASE_(MsgWithId, ax, ay, bx, by, whereX, whereY, velocityX, velocityY, speed, acceleration, theta, state)
+	_IMPL_SERIALIAZION_WITH_BASE_(MsgWithId, ax, ay, bx, by, whereX, whereY, velocityX, velocityY, speed, acceleration, theta, hp, state, score)
 
 };
 
@@ -59,9 +62,11 @@ struct PlayerInfoMsg: MsgWithId {
 	float speed;					// maximum speed
 	float acceleration;				// acceleration
 	float theta;					// rotation (in rad)
+	float hp;
 	int state;
+	int score;
 
-	_IMPL_SERIALIAZION_WITH_BASE_(MsgWithId, ax, ay, bx, by, whereX, whereY, velocityX, velocityY, speed, acceleration, theta, state)
+	_IMPL_SERIALIAZION_WITH_BASE_(MsgWithId, ax, ay, bx, by, whereX, whereY, velocityX, velocityY, speed, acceleration, theta, hp, state, score)
 
 };
 struct ShootMsg: MsgWithId {
@@ -73,4 +78,10 @@ struct RestartMsg : MsgWithId {
 
 	_IMPL_SERIALIAZION_WITH_BASE_(MsgWithId)
 
+};
+struct DamageMsg : MsgWithId {
+	float damage;
+	Uint8 shooter;
+
+	_IMPL_SERIALIAZION_WITH_BASE_(MsgWithId, damage, shooter);
 };

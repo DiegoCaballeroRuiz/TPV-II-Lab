@@ -102,6 +102,7 @@ void UDPServer::listen() {
 
 							// tell all clients, except the sender, that a new client connected
 							m2._type = _NEW_CLIENT_CONNECTED;
+							
 							send_to_all_except(m2, m2._client_id);
 
 							// print information
@@ -182,4 +183,3 @@ int UDPServer::who_is_the_master() {
 
 	return -1;
 }
-

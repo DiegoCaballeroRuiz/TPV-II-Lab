@@ -70,7 +70,7 @@ void LittleWolf::update() {
 		shoot(p.id);
 
 		_game->getNetworking().send_my_info(p.fov.a.x, p.fov.a.y, p.fov.b.x, p.fov.b.y, p.where.x, p.where.y,
-			p.velocity.x, p.velocity.y, p.speed, p.acceleration, p.theta, p.state);
+			p.velocity.x, p.velocity.y, p.speed, p.acceleration, p.theta, p.hp, p.state, p.score);
 	}
 	else {
 		if (sdlutils().virtualTimer().currRealTime() > _restartInitTime + _restartCooldown) {
@@ -250,14 +250,16 @@ bool LittleWolf::addPlayer(std::uint8_t id) {
 					2.0f, 			// Speed.
 					0.9f, 			// Acceleration.
 					0.0f, 			// Rotation angle in radians.
-					ALIVE 			// Player state
+					100.0f,			// Hp
+					ALIVE,			// Player state
+					0,				// Score
 			};
 
 	// not that player <id> is stored in the map as player_to_tile(id) -- which is id+10
 	_map.walling[(int) p.where.y][(int) p.where.x] = player_to_tile(id);
 	_players[id] = p;
 
-	_game->getNetworking().send_my_info(p.fov.a.x, p.fov.a.y, p.fov.b.x, p.fov.b.y, p.where.x, p.where.y, p.velocity.x, p.velocity.y, p.speed, p.acceleration, p.theta, p.state);
+	_game->getNetworking().send_my_info(p.fov.a.x, p.fov.a.y, p.fov.b.x, p.fov.b.y, p.where.x, p.where.y, p.velocity.x, p.velocity.y, p.speed, p.acceleration, p.theta, p.hp, p.state, p.score);
 
 	return true;
 }
@@ -497,7 +499,7 @@ void LittleWolf::render_players_info() {
 		if (s != NOT_USED) {
 
 			std::string msg = (i == _game->getNetworking().client_id() ? "*P" : " P")
-					+ std::to_string(i) + (s == DEAD ? " (dead)" : "");
+					+ std::to_string(i) + (s == DEAD ? " (dead)" : "") + (" score: " + std::to_string(_players[i].score));
 
 			Texture info(sdlutils().renderer(), msg,
 					sdlutils().fonts().at("MFR24"),
@@ -625,10 +627,22 @@ void LittleWolf::resolveShoot(Uint8 pid) {
 
 		// if we hit a tile with a player id and the distance from that tile is smaller
 		// than shoot_distace, we mark the player as dead
-		if (hit.tile > 9 && mag(sub(p.where, hit.where)) < _shoot_distace) {
+
+		float magnitude = mag(sub(p.where, hit.where));
+		if (hit.tile > 9 && magnitude < _shoot_distace) {
 			uint8_t id = tile_to_player(hit.tile);
-			killPlayer(id);
-			_game->getNetworking().send_dead(id);
+			
+			float damage = (_shoot_distace - magnitude) * _damageFactor;
+			hitPlayer(id, damage);
+
+			std::cout << "I am sending damage ;)\n";
+			_game->getNetworking().send_damage(id, damage, pid);
+
+			if (_players[id].hp <= 0) {
+				killPlayer(id);
+				_game->getNetworking().send_dead(id);
+			}
+			
 			return;
 		}
 	}
@@ -680,7 +694,9 @@ void LittleWolf::restart() {
 							2.0f, 			// Speed.
 							0.9f, 			// Acceleration.
 							0.0f, 			// Rotation angle in radians.
-							ALIVE 			// Player state
+							100.0f,			// hp
+							ALIVE, 			// Player state
+							_players[id].score,	// Score
 			};
 
 			// not that player <id> is stored in the map as player_to_tile(id) -- which is id+10
@@ -720,4 +736,18 @@ void LittleWolf::updatePlayer(std::uint8_t id, const Player& player) {
 void LittleWolf::updateState(std::uint8_t id, PlayerState state) {
 	_players[id].state = state;
 }
+
+void LittleWolf::hitPlayer(std::uint8_t id, float damage) {
+	if (_players[id].state != ALIVE) return;
+
+	_players[id].hp -= damage;
+	sdlutils().soundEffects().at("pain").play();
+}
+
+void LittleWolf::addScore(std::uint8_t id) {
+	_players[id].score += 1;
+
+	std::cout << "\nPlayer " << (int)id << " recieves a point" << std::endl;
+}
+
 

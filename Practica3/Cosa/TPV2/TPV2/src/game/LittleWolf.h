@@ -74,7 +74,9 @@ public:
 		float speed;         // maximum speed
 		float acceleration;  // acceleration
 		float theta;         // rotation (in rad)
+		float hp;		     // life
 		PlayerState state;   // the state
+		int score;
 	};
 
 	// Representing a map, the user_walling is the walling provided by the user, and
@@ -155,6 +157,8 @@ public:
 
 	void updateState(std::uint8_t id, PlayerState state);
 
+	void hitPlayer(std::uint8_t id, float damage);
+
 	void restart();
 
 	std::uint8_t getFirstExistingPlayer();
@@ -179,10 +183,12 @@ public:
 	// Quiero declararle mi amor pero solo se declarar variables
 	bool shoot(Uint8 pid);
 	void resolveShoot(Uint8 pid);
+	void addScore(std::uint8_t id);
 
 private:
 
 	Game* _game;
+	float _damageFactor = 8.0f;
 
 	// mark all (used) player alive
 	void bringAllToLife();

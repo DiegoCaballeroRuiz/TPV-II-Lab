@@ -97,6 +97,7 @@ void Networking::update() {
 	ShootMsg m3;
 	MsgWithId m4;
 	PlayerInfoMsg m5;
+	DamageMsg m6;
 
 	while (SDLNetUtils::deserializedReceive(m0, _p, _sock) > 0) {
 
@@ -137,6 +138,11 @@ void Networking::update() {
 			handle_restart();
 			break;
 
+		case _DAMAGE:
+			m6.deserialize(_p->data);
+			handle_damage(m6);
+			break;
+
 		default:
 			break;
 		}
@@ -173,6 +179,7 @@ void Networking::send_state(Uint8 id, float ax, float ay, float bx, float by, fl
 	m.theta = theta;
 	m.state = state;
 	m._type = _PLAYER_STATE;
+	m.score = 
 
 	m.state = state;
 	SDLNetUtils::serializedSend(m, _p, _sock, _srvadd);
@@ -190,6 +197,8 @@ void Networking::handle_player_state(const PlayerStateMsg &m) {
 	player.state = (LittleWolf::PlayerState)m.state;
 	player.theta = m.theta;
 	player.velocity = { m.velocityX, m.velocityY };
+	player.hp = m.hp;
+	player.score = m.score;
 
 	Game::Instance()->getLittleWolf().updatePlayer(m._client_id, player);
 }
@@ -221,11 +230,12 @@ void Networking::send_dead(Uint8 id) {
 }
 
 void Networking::handle_dead(const MsgWithId &m) {
-	Game::Instance()->getLittleWolf().killPlayer(m._client_id);
+	std::cout << "I have to kill player " << (int)m._client_id << std::endl;
+	if(!is_master()) Game::Instance()->getLittleWolf().killPlayer(m._client_id);
 }
 
 void Networking::send_my_info(float ax, float ay, float bx, float by, float whereX, float whereY, float velocityX, float velocityY, float speed,
-	float acceleration, float theta, int state) {
+	float acceleration, float theta, int hp, int state, int score) {
 	PlayerInfoMsg m;
 	m._type = _PLAYER_INFO;
 	m._client_id = _clientId;
@@ -241,6 +251,8 @@ void Networking::send_my_info(float ax, float ay, float bx, float by, float wher
 	m.acceleration = acceleration;
 	m.theta = theta;
 	m.state = state;
+	m.score = score;
+	m.hp = hp;
 	SDLNetUtils::serializedSend(m, _p, _sock, _srvadd);
 }
 
@@ -256,6 +268,8 @@ void Networking::handle_player_info(const PlayerInfoMsg &m) {
 		player.state = (LittleWolf::PlayerState) m.state;
 		player.theta = m.theta;
 		player.velocity = { m.velocityX, m.velocityY };
+		player.hp = m.hp;
+		player.score = m.score;
 
 		Game::Instance()->getLittleWolf().updatePlayer(m._client_id, player);
 	}
@@ -268,4 +282,20 @@ void Networking::send_restart() {
 
 void Networking::handle_restart() {
 	Game::Instance()->getLittleWolf().setRestart(true);
+}
+
+void Networking::send_damage(Uint8 id, float damage, Uint8 shooter) {
+	DamageMsg m;
+	m._client_id = id;
+	m._type = _DAMAGE;
+	m.damage = damage;
+	m.shooter = shooter;
+	SDLNetUtils::serializedSend(m, _p, _sock, _srvadd);
+}
+
+void Networking::handle_damage(const DamageMsg& m) {
+	if(!is_master()) Game::Instance()->getLittleWolf().hitPlayer(m._client_id, m.damage);
+
+	std::cout << "I recieved the scoring message\n";
+	Game::Instance()->getLittleWolf().addScore(m.shooter);
 }

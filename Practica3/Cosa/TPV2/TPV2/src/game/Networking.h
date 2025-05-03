@@ -27,10 +27,11 @@ public:
 	void send_state(Uint8 id, float ax, float ay, float bx, float by, float whereX, float whereY, float velocityX, float velocityY,
 		float speed, float acceleration, float theta, int state);
 	void send_my_info(float ax, float ay, float bx, float by, float whereX, float whereY, float velocityX, float velocityY,
-		float speed, float acceleration, float theta, int state);
+		float speed, float acceleration, float theta, int hp, int state, int score);
 	
 	void send_shoot(Uint8 id);
 	void send_dead(Uint8 id);
+	void send_damage(Uint8 id, float damage, Uint8 shooter);
 	void send_restart();
 
 private:
@@ -41,6 +42,7 @@ private:
 	void handle_player_info(const PlayerInfoMsg& m);
 	void handle_shoot(const ShootMsg &m);
 	void handle_dead(const MsgWithId &m);
+	void handle_damage(const DamageMsg& m);
 	void handle_restart();
 
 	UDPsocket _sock;
