@@ -161,6 +161,8 @@ public:
 
 	void restart();
 
+	void updateName(std::uint8_t id, std::string name);
+
 	std::uint8_t getFirstExistingPlayer();
 
 	// initialize the SDL window information
@@ -188,7 +190,7 @@ public:
 private:
 
 	Game* _game;
-	float _damageFactor = 8.0f;
+	float _damageFactor = 0.7f;
 
 	// mark all (used) player alive
 	void bringAllToLife();
@@ -427,6 +429,9 @@ private:
 
 	// array of players
 	Player _players[_max_player];
+
+	// array of names
+	std::string _names[_max_player];
 
 	// the GPU structure with all the needed elements to draw the world
 	Gpu _gpu;

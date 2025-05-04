@@ -26,6 +26,7 @@ LittleWolf::LittleWolf(Game* game) :
 		_shoot_distace(), // the shoot distance -- not that it's wrt to the walling size
 		_map(), //
 		_players(),
+		_names(),
 		_restart(false),
 		_restartInitTime(0.),
 		_restartCooldown(5000),
@@ -44,6 +45,9 @@ void LittleWolf::init(SDL_Window *window, SDL_Renderer *render) {
 			_xres);
 
 	_gpu = { window, render, texture, _xres, _yres };
+
+	_names[_game->getNetworking().client_id()] = _game->getNetworking().getName();
+	_game->getNetworking().send_name();
 
 }
 
@@ -499,7 +503,8 @@ void LittleWolf::render_players_info() {
 		if (s != NOT_USED) {
 
 			std::string msg = (i == _game->getNetworking().client_id() ? "*P" : " P")
-					+ std::to_string(i) + (s == DEAD ? " (dead)" : "") + (" score: " + std::to_string(_players[i].score));
+					+ std::to_string(i) + " " + _names[i] 
+					+ (s == DEAD ? " (dead)" : "") + (" score: " + std::to_string(_players[i].score));
 
 			Texture info(sdlutils().renderer(), msg,
 					sdlutils().fonts().at("MFR24"),
@@ -528,6 +533,7 @@ void LittleWolf::render_players_info() {
 void LittleWolf::move(Player &p) {
 	auto &ihdrl = ih();
 
+	std::cout << "My name is " << _game->getNetworking().getName() << std::endl;
 	// W forwards, S backwards, D right, L left
 
 	const Point last = p.where, zero = { 0.0f, 0.0f };
@@ -635,7 +641,8 @@ void LittleWolf::resolveShoot(Uint8 pid) {
 			float damage = (_shoot_distace - magnitude) * _damageFactor;
 			hitPlayer(id, damage);
 
-			std::cout << "I am sending damage ;)\n";
+			printf("Life of player with ID %d: %f\n", id, _players[id].hp);
+
 			_game->getNetworking().send_damage(id, damage, pid);
 
 			if (_players[id].hp <= 0) {
@@ -702,7 +709,7 @@ void LittleWolf::restart() {
 			// not that player <id> is stored in the map as player_to_tile(id) -- which is id+10
 			_map.walling[(int)p.where.y][(int)p.where.x] = player_to_tile(id);
 			Game::Instance()->getNetworking().send_state(id, p.fov.a.x, p.fov.a.y, p.fov.b.x, p.fov.b.y, p.where.x, p.where.y,
-				p.velocity.x, p.velocity.y, p.speed, p.acceleration, p.theta, p.state);
+				p.velocity.x, p.velocity.y, p.speed, p.acceleration, p.theta, p.hp, p.state, p.score);
 		}
 	}
 }
@@ -748,6 +755,10 @@ void LittleWolf::addScore(std::uint8_t id) {
 	_players[id].score += 1;
 
 	std::cout << "\nPlayer " << (int)id << " recieves a point" << std::endl;
+}
+
+void LittleWolf::updateName(std::uint8_t id, std::string name) {
+	_names[id] = name;
 }
 
 

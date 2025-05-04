@@ -79,6 +79,16 @@ bool Networking::init(char *host, Uint16 port) {
 	std::cout << "Connected with id " << (int) _clientId << std::endl;
 #endif
 
+	std::cout << "Write a name:" << std::endl;
+	
+	char name[100];
+	std::cin >> name;
+
+	for (int i = 0; i < 10; ++i) {
+		_name[i] = name[i];
+	}
+	_name[10] = 0;
+
 	return true;
 }
 
@@ -98,6 +108,7 @@ void Networking::update() {
 	MsgWithId m4;
 	PlayerInfoMsg m5;
 	DamageMsg m6;
+	NameMsg m7;
 
 	while (SDLNetUtils::deserializedReceive(m0, _p, _sock) > 0) {
 
@@ -143,6 +154,13 @@ void Networking::update() {
 			handle_damage(m6);
 			break;
 
+		case _NAME:
+			std::cout << "before deserialization" << std::endl;
+			m7.deserialize(_p->data);
+			std::cout << "after deserialization" << std::endl;
+			handle_name(m7);
+			break;
+
 		default:
 			break;
 		}
@@ -150,8 +168,10 @@ void Networking::update() {
 }
 
 void Networking::handle_new_client(Uint8 id) {
-	if (id != _clientId)
+	if (id != _clientId) {
 		Game::Instance()->getLittleWolf().updateState(id, LittleWolf::ALIVE);
+		send_name();
+	}
 }
 
 void Networking::handle_disconnet(Uint8 id) {
@@ -162,8 +182,8 @@ void Networking::handle_disconnet(Uint8 id) {
 	}
 }
 
-void Networking::send_state(Uint8 id, float ax, float ay, float bx, float by, float whereX, float whereY, float velocityX, float velocityY,
-	float speed, float acceleration, float theta, int state) {
+void Networking::send_state(Uint8 id, float ax, float ay, float bx, float by, float whereX, float whereY, float velocityX, float velocityY, float speed,
+	float acceleration, float theta, int hp, int state, int score) {
 	PlayerStateMsg m;
 	m._client_id = id;
 	m.ax = ax;
@@ -179,9 +199,9 @@ void Networking::send_state(Uint8 id, float ax, float ay, float bx, float by, fl
 	m.theta = theta;
 	m.state = state;
 	m._type = _PLAYER_STATE;
-	m.score = 
+	m.score = score;
+	m.hp = hp;
 
-	m.state = state;
 	SDLNetUtils::serializedSend(m, _p, _sock, _srvadd);
 }
 
@@ -295,7 +315,33 @@ void Networking::send_damage(Uint8 id, float damage, Uint8 shooter) {
 
 void Networking::handle_damage(const DamageMsg& m) {
 	if(!is_master()) Game::Instance()->getLittleWolf().hitPlayer(m._client_id, m.damage);
-
-	std::cout << "I recieved the scoring message\n";
 	Game::Instance()->getLittleWolf().addScore(m.shooter);
+}
+
+void Networking::send_name() {
+	NameMsg m;
+	m._client_id = _clientId;
+	for (int i = 0; i < 11; ++i) {
+		m.name[i] = _name[i];
+	}
+	m._type = _NAME;
+	SDLNetUtils::serializedSend(m, _p, _sock, _srvadd);
+}
+
+void Networking::handle_name(const NameMsg& m) {
+	if (_clientId != m._client_id) {
+		std::string name;
+		charToString(name, _name);
+		Game::Instance()->getLittleWolf().updateName(m._client_id, m.name);
+	}
+}
+
+void Networking::charToString(std::string& str, const char c_str[11]) {
+	str = std::string(c_str);
+}
+
+void Networking::stringToChar(std::string& str, char c_str[11]) {
+	auto i = 0u;
+	for (; i < str.size() && i < 10; ++i) c_str[i] = str[i];
+	c_str[i] = 0;
 }
