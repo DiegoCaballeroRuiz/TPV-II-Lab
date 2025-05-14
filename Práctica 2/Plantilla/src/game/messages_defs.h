@@ -4,10 +4,11 @@
 #include <cstdint>
 #include "../ecs/ecs.h"
 
+class Immunity;
 using msgId_type = uint8_t;
 enum msgId : msgId_type {
-	_m_STAR_EATEN, _m_CREATE_STARS, _m_NEW_GAME, _m_ROUND_START, _m_ROUND_OVER, _m_GAME_OVER,
-	_m_PACMAN_FOOD_COLLISION, _m_PACMAN_GHOST_COLLISION, _m_IMMUNITY_START, _m_IMMUNITY_END, _m_NEW_ROUND
+	_m_STAR_EATEN, _m_CREATE_STARS, _m_NEW_GAME, _m_ROUND_START, _m_ROUND_OVER, _m_GAME_OVER, _m_PACMAN_FOOD_COLLISION, 
+	_m_PACMAN_GHOST_COLLISION, _m_IMMUNITY_START, _m_IMMUNITY_END, _m_REGISTER_IMMUNE, _m_NEW_ROUND
 };
 
 
@@ -46,11 +47,11 @@ struct Message {
 		} ghost_hit;
 
 		struct {
-
+			Immunity* immunity;
 		} inmunity_start;
 
 		struct {
-
+			Immunity* immunity;
 		} inmunity_end;
 
 		struct {
@@ -60,5 +61,10 @@ struct Message {
 		struct {
 
 		} game_over;
+
+		struct {
+			Immunity* immunity;
+			bool isPacMan;
+		} register_immune;
 	};
 };

@@ -8,7 +8,6 @@ namespace ecs {
 }
 class RunningState : public GameState {
 	ecs::Manager* _manager;
-	float _lastTimeAstroidAdded;
 public:
 	RunningState(Game* game);
 	~RunningState() {}

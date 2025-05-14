@@ -16,6 +16,7 @@ private:
 	ecs::System* _fruitSys;
 	ecs::System* _ghostSys;
 	ecs::System* _stateSys;
+	ecs::System* _immunitySys;
 
 	GameState* _state;
 	GameState* _paused_state;
@@ -36,6 +37,7 @@ public:
 	inline ecs::System* getGhostSys() { return _ghostSys; }
 	inline ecs::System* getRenderSys() { return _renderSys; }
 	inline ecs::System* getCollisionSys() { return _collisionSys; }
+	inline ecs::System* getImmunitySys() { return _immunitySys; }
 
 	enum State {
 		RUNNING, PAUSED, NEWGAME, NEWROUND, GAMEOVER

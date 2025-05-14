@@ -70,31 +70,29 @@ GhostSystem::update() {
 
 void 
 GhostSystem::recieve(const Message& msg) {
-	if (msg.id == msgId::_m_ROUND_START) {
-		
+
+	switch (msg.id) {
+
+	case msgId::_m_ROUND_START:
 		_lastGhostSpawnTime = sdlutils().virtualTimer().currTime();
-	}
+		break;
 
- 	else if (msg.id == msgId::_m_ROUND_OVER) {
-		auto ghosts = _manager->getEntities(_ghostGroup);
-		for (auto ghost : ghosts) _manager->setAlive(ghost, false);
-	}
+	case  msgId::_m_ROUND_OVER :
+		for (auto ghost : _manager->getEntities(_ghostGroup)) _manager->setAlive(ghost, false);
+		break;
 
-	else if (msg.id == msgId::_m_IMMUNITY_START) {
-		auto ghosts = _manager->getEntities(_ghostGroup);
-		for (auto ghost : ghosts) {
-			auto texSrc = _manager->getComponent<TextureSrc>(ghost);
-			texSrc->_src = _blueSrcRect;
-		}
+	case msgId::_m_IMMUNITY_START:
+		for (auto ghost : _manager->getEntities(_ghostGroup)) 
+			_manager->getComponent<TextureSrc>(ghost)->_src = _blueSrcRect;
+
 		_canSpawn = false;
-	}
+		break;
+		
+	case msgId::_m_IMMUNITY_END:
+		for (auto ghost : _manager->getEntities(_ghostGroup)) 
+			_manager->getComponent<TextureSrc>(ghost)->_src = _defaultSrcRect;
 
-	else if (msg.id == msgId::_m_IMMUNITY_END) {
-		auto ghosts = _manager->getEntities(_ghostGroup);
-		for (auto ghost : ghosts) {
-			auto texSrc = _manager->getComponent<TextureSrc>(ghost);
-			texSrc->_src = _defaultSrcRect;
-		}
 		_canSpawn = true;
+		break;
 	}
 }

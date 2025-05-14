@@ -13,6 +13,7 @@
 #include "../systems/FruitSystem.h"
 #include "../systems/GhostSystem.h"
 #include "../systems/StateChangeSystem.h"
+#include "../systems/ImmunitySystem.h"
 #include "../utils/Vector2D.h"
 #include "../utils/Collisions.h"
 #include "NewGameState.h"
@@ -36,6 +37,12 @@ Game::Game() :
 
 Game::~Game() {
 	delete _mngr;
+
+	delete _paused_state;
+	delete _runing_state;
+	delete _newgame_state;
+	delete _newround_state;
+	delete _gameover_state;
 
 	// release InputHandler if the instance was created correctly.
 	if (InputHandler::HasInstance())
@@ -74,6 +81,7 @@ void Game::init() {
 	_fruitSys = _mngr->addSystem<FruitSystem>();
 	_ghostSys = _mngr->addSystem<GhostSystem>();
 	_stateSys = _mngr->addSystem<StateChangeSystem>(this);
+	_immunitySys = _mngr->addSystem<ImmunitySystem>();
 
 	_pacmanSys->initSystem();
 	_ghostSys->initSystem();

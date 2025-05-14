@@ -8,7 +8,7 @@
 #include "../components/Transform.h"
 #include "../components/Health.h"
 
-RunningState::RunningState(Game* game) : GameState(game), _lastTimeAstroidAdded(0)
+RunningState::RunningState(Game* game) : GameState(game)
 {
 	_inputHandler = InputHandler::Instance();
 }
@@ -31,6 +31,7 @@ RunningState::update() {
 	_game->getPacManSys()->update();
 	_game->getFruitSys()->update();
 	_game->getGhostSys()->update();
+	_game->getImmunitySys()->update();
 
 	//Colisiones
 	_game->getCollisionSys()->update();

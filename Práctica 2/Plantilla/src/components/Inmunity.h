@@ -2,11 +2,12 @@
 
 #include "../ecs/Component.h"
 
-struct Inmunity : public ecs::Component {
-	Inmunity() : _inmune(false) {}
-	Inmunity(bool inmune) : _inmune(inmune) {}
+struct Immunity : public ecs::Component {
+	Immunity() : _inmune(false), _immunityEnd(0U) {}
+	Immunity(bool inmune, std::uint32_t timeToStop) : _inmune(inmune), _immunityEnd(timeToStop) {}
 
-	~Inmunity() {}
+	~Immunity() {}
 
 	bool _inmune;
+	std::uint32_t _immunityEnd;
 };

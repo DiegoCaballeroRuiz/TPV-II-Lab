@@ -9,7 +9,7 @@ struct StarMotion;
 struct Points;
 struct TextureSrc;
 struct Miraculous;
-struct Inmunity;
+struct Immunity;
 struct Health;
 
 #define _CMPS_LIST_ \
@@ -19,7 +19,7 @@ struct Health;
 	Points, \
 	TextureSrc, \
 	Miraculous, \
-	Inmunity, \
+	Immunity, \
 	Health
 	
 
@@ -43,6 +43,7 @@ class GameCtrlSystem;
 class CollisionsSystem;
 class GhostSystem;
 class StateChangeSystem;
+class ImmunitySystem;
 
 #define _SYS_LIST_ \
     FruitSystem, \
@@ -51,5 +52,6 @@ class StateChangeSystem;
 	GameCtrlSystem, \
 	CollisionsSystem, \
 	GhostSystem, \
-	StateChangeSystem
+	StateChangeSystem, \
+	ImmunitySystem
 

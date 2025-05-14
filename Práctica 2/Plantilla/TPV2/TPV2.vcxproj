@@ -40,6 +40,7 @@
     <ClCompile Include="..\src\systems\FruitSystem.cpp" />
     <ClCompile Include="..\src\systems\GameCtrlSystem.cpp" />
     <ClCompile Include="..\src\systems\GhostSystem.cpp" />
+    <ClCompile Include="..\src\systems\ImmunitySystem.cpp" />
     <ClCompile Include="..\src\systems\PacManSystem.cpp" />
     <ClCompile Include="..\src\systems\RenderSystem.cpp" />
     <ClCompile Include="..\src\systems\StateChangeSystem.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="..\src\systems\FruitSystem.h" />
     <ClInclude Include="..\src\systems\GameCtrlSystem.h" />
     <ClInclude Include="..\src\systems\GhostSystem.h" />
+    <ClInclude Include="..\src\systems\ImmunitySystem.h" />
     <ClInclude Include="..\src\systems\PacManSystem.h" />
     <ClInclude Include="..\src\systems\RenderSystem.h" />
     <ClInclude Include="..\src\systems\StateChangeSystem.h" />

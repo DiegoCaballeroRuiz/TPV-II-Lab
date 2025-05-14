@@ -7,7 +7,10 @@
 
 class GhostSystem : public ecs::System {
 	ecs::grpId_t _ghostGroup;
-	float _lastGhostSpawnTime, _spawnDelay, _ghostSpeed, _changeTargetProbability;
+	float _ghostSpeed, _changeTargetProbability;
+
+	std::uint32_t _lastGhostSpawnTime, _spawnDelay;
+
 	std::vector<Vector2D> _spawnPoints;
 	SDL_Rect  _defaultSrcRect, _blueSrcRect;
 	bool _canSpawn;

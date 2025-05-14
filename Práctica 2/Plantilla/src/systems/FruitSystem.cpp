@@ -68,8 +68,6 @@ void
 FruitSystem::update() {
 	auto fruits = _manager->getEntities(_fruitGroup);
 
-	std::cout << fruits.size() << "\n";
-
 	if (fruits.size() == 0) {
 		Message m; 
 		m.id = msgId::_m_ROUND_OVER;
@@ -105,22 +103,20 @@ FruitSystem::update() {
 
 void 
 FruitSystem::recieve(const Message& msg) {
-	if (msg.id == msgId::_m_NEW_GAME) {
-		auto fruits = _manager->getEntities(_fruitGroup);
 
-		for (auto fruit : fruits)
+	switch (msg.id) {
+
+	case msgId::_m_NEW_GAME: 
+		for (auto fruit : _manager->getEntities(_fruitGroup))
 			_manager->setAlive(fruit, false);
-
 		createFruits();
-	}
+		break;
 
-	else if (msg.id == msgId::_m_ROUND_START) {
-		auto fruits = _manager->getEntities(_fruitGroup);
-		for (auto fruit : fruits) {
-			if (_manager->hasComponent<Miraculous>(fruit)) {
-				Miraculous* miraculous = _manager->getComponent<Miraculous>(fruit);
-				miraculous->T = sdlutils().virtualTimer().currTime();
-			}
+	case msgId::_m_ROUND_START:
+		for (auto fruit : _manager->getEntities(_fruitGroup)) {
+			if (_manager->hasComponent<Miraculous>(fruit)) 
+				_manager->getComponent<Miraculous>(fruit)->T = sdlutils().virtualTimer().currTime();
+			break;
 		}
 	}
 }

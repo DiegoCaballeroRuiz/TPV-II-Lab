@@ -8,10 +8,10 @@ struct Miraculous : public ecs::Component {
 		MIRACULOUS
 	};
 
-	Miraculous(int n) : _state(NORMAL), N(n) {}
-	Miraculous(State state, int n) : _state(state), N(n) {}
+	Miraculous(std::uint32_t n) : _state(NORMAL), N(n) {}
+	Miraculous(State state, std::uint32_t n) : _state(state), N(n) {}
 	~Miraculous() {}
 
 	State _state;
-	int N, M, T;
+	std::uint32_t N, M, T;
 };
