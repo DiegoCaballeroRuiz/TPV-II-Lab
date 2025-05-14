@@ -7,7 +7,7 @@
 class Immunity;
 using msgId_type = uint8_t;
 enum msgId : msgId_type {
-	_m_STAR_EATEN, _m_CREATE_STARS, _m_NEW_GAME, _m_ROUND_START, _m_ROUND_OVER, _m_GAME_OVER, _m_PACMAN_FOOD_COLLISION, 
+	_m_NEW_GAME, _m_ROUND_START, _m_ROUND_OVER, _m_GAME_OVER, _m_PACMAN_FOOD_COLLISION, 
 	_m_PACMAN_GHOST_COLLISION, _m_IMMUNITY_START, _m_IMMUNITY_END, _m_REGISTER_IMMUNE, _m_NEW_ROUND
 };
 
@@ -20,17 +20,6 @@ struct Message {
 	// every where.
 
 	union {
-
-		// _m_STAR_EATEN
-		struct {
-			ecs::entity_t e;
-		} star_eaten_data;
-
-		// _m_CREATE_STARS
-		struct {
-			unsigned int n;
-		} create_stars_data;
-
 		//Round starts
 		struct {
 

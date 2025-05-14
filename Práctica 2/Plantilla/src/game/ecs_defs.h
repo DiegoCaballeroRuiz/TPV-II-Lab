@@ -5,7 +5,6 @@
 //
 struct Transform;
 struct Image;
-struct StarMotion;
 struct Points;
 struct TextureSrc;
 struct Miraculous;
@@ -15,7 +14,6 @@ struct Health;
 #define _CMPS_LIST_ \
 	Transform, \
 	Image, \
-	StarMotion, \
 	Points, \
 	TextureSrc, \
 	Miraculous, \
@@ -39,7 +37,6 @@ struct Health;
 class FruitSystem;
 class RenderSystem;
 class PacManSystem;
-class GameCtrlSystem;
 class CollisionsSystem;
 class GhostSystem;
 class StateChangeSystem;
@@ -49,7 +46,6 @@ class ImmunitySystem;
     FruitSystem, \
 	RenderSystem, \
 	PacManSystem, \
-	GameCtrlSystem, \
 	CollisionsSystem, \
 	GhostSystem, \
 	StateChangeSystem, \

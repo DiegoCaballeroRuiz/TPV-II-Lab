@@ -38,7 +38,6 @@
     <ClCompile Include="..\SRC\sdlutils\Texture.cpp" />
     <ClCompile Include="..\src\systems\CollisionsSystem.cpp" />
     <ClCompile Include="..\src\systems\FruitSystem.cpp" />
-    <ClCompile Include="..\src\systems\GameCtrlSystem.cpp" />
     <ClCompile Include="..\src\systems\GhostSystem.cpp" />
     <ClCompile Include="..\src\systems\ImmunitySystem.cpp" />
     <ClCompile Include="..\src\systems\PacManSystem.cpp" />
@@ -148,7 +147,6 @@
     <ClInclude Include="..\src\components\Inmunity.h" />
     <ClInclude Include="..\src\components\Miraculous.h" />
     <ClInclude Include="..\src\components\Points.h" />
-    <ClInclude Include="..\src\components\StarMotion.h" />
     <ClInclude Include="..\src\components\TextureSrc.h" />
     <ClInclude Include="..\src\components\Transform.h" />
     <ClInclude Include="..\src\ecs\Component.h" />
@@ -185,7 +183,6 @@
     <ClInclude Include="..\SRC\sdlutils\VirtualTimer.h" />
     <ClInclude Include="..\src\systems\CollisionsSystem.h" />
     <ClInclude Include="..\src\systems\FruitSystem.h" />
-    <ClInclude Include="..\src\systems\GameCtrlSystem.h" />
     <ClInclude Include="..\src\systems\GhostSystem.h" />
     <ClInclude Include="..\src\systems\ImmunitySystem.h" />
     <ClInclude Include="..\src\systems\PacManSystem.h" />
