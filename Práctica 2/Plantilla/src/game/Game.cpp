@@ -28,7 +28,8 @@ Game::Game() :
 	_pacmanSys(), //
 	_fruitSys(), //
 	_renderSys(), //
-	_collisionSys()
+	_collisionSys(), //
+	_state(nullptr)
 {
 	
 }
